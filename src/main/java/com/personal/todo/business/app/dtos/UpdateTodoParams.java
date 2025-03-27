@@ -1,11 +1,6 @@
 package com.personal.todo.business.app.dtos;
 
-import java.util.Objects;
+import io.micrometer.common.lang.NonNull;
 
-public record UpdateTodoParams(String id, String title, String userId) {
-    public UpdateTodoParams {
-        Objects.requireNonNull(id, "id cannot be null");
-        Objects.requireNonNull(id, "title cannot be null");
-        Objects.requireNonNull(id, "userId cannot be null");
-    }
+public record UpdateTodoParams(int id, @NonNull String title, @NonNull String userId) {
 }
