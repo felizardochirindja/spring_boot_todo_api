@@ -1,14 +1,27 @@
 package com.personal.todo.business.entities;
 
 import com.personal.todo.business.types.TodoStatus;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
-@Table
+@Table(name = "todos")
+@Getter
+@Setter
+@NoArgsConstructor
 public class Todo {
-    private String id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
     private String title;
+    @Enumerated(EnumType.STRING)
     private TodoStatus status;
+    @OneToOne(cascade = CascadeType.ALL, optional = false)
     private User user;
+
+    public Todo(String title, TodoStatus status, User user) {
+        this.title = title;
+        this.status = status;
+        this.user = user;
+    }
 }
