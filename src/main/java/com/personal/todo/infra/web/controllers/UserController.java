@@ -5,7 +5,7 @@ import com.personal.todo.business.app.dtos.CreateUserParams;
 import com.personal.todo.business.entities.Todo;
 import com.personal.todo.business.entities.User;
 import com.personal.todo.infra.web.controllers.payloads.CreateUserPayload;
-import com.personal.todo.infra.web.controllers.responses.CreateUserResponse;
+import com.personal.todo.infra.web.controllers.responses.UserApiResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,7 +19,7 @@ public class UserController {
     private UserActions userActions;
 
     @PostMapping
-    public ResponseEntity<CreateUserResponse> create(@RequestBody @Valid CreateUserPayload payload) {
+    public ResponseEntity<UserApiResponse> create(@RequestBody @Valid CreateUserPayload payload) {
         CreateUserParams params = new CreateUserParams(
             payload.name(),
             payload.email(),
@@ -27,9 +27,9 @@ public class UserController {
         );
 
         User user = userActions.create(params);
-        CreateUserResponse response = new CreateUserResponse(
+        UserApiResponse response = new UserApiResponse(
                 "sucess",
-                "user created sucessfully",
+                "user created successfully",
                 user
         );
 
@@ -37,8 +37,16 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public String readById() {
-        return null;
+    public ResponseEntity<UserApiResponse> readById(@PathVariable Integer id) {
+        User user = userActions.readById(id);
+
+        UserApiResponse response = new UserApiResponse(
+                "sucess",
+                "user read sucessfully",
+                user
+        );
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @DeleteMapping

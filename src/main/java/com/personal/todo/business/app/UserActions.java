@@ -21,8 +21,9 @@ public class UserActions {
         return userRepository.save(user);
     }
 
-    public Todo readById(String id) {
-        return null;
+    public User readById(int id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("user not found"));
     }
 
     public Todo delete(String todoId, String userId) {
