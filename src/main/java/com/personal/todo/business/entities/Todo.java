@@ -16,7 +16,7 @@ public class Todo {
     private String title;
     @Enumerated(EnumType.STRING)
     private TodoStatus status;
-    @OneToOne(cascade = CascadeType.ALL, optional = false)
+    @ManyToOne
     private User user;
 
     public Todo(String title, TodoStatus status, User user) {

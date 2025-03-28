@@ -1,4 +1,10 @@
 package com.personal.todo.infra.web.controllers.payloads;
 
-public record CreateTodoPayload(String title, int userId) {
+import jakarta.validation.constraints.NotNull;
+
+public record CreateTodoPayload(
+        @NotNull(message = "title cannot be null")
+        String title,
+        @NotNull(message = "userId cannot be null")
+        Integer userId) {
 }

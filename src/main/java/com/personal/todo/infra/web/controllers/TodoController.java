@@ -4,6 +4,7 @@ import com.personal.todo.business.app.TodoActions;
 import com.personal.todo.business.app.dtos.CreateTodoParams;
 import com.personal.todo.business.entities.Todo;
 import com.personal.todo.infra.web.controllers.payloads.CreateTodoPayload;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,7 @@ public class TodoController {
     private TodoActions actions;
 
     @PostMapping
-    public ResponseEntity<Todo> create(@RequestBody CreateTodoPayload payload) {
+    public ResponseEntity<Todo> create(@RequestBody @Valid CreateTodoPayload payload) {
         CreateTodoParams params = new CreateTodoParams(payload.title(), payload.userId());
         return ResponseEntity.status(HttpStatus.CREATED).body(actions.create(params));
     }
