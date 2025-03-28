@@ -1,6 +1,5 @@
 package com.personal.todo.infra.web.controllers;
 
-import com.personal.todo.adapters.repo.TodoRepository;
 import com.personal.todo.business.app.TodoActions;
 import com.personal.todo.business.app.dtos.CreateTodoParams;
 import com.personal.todo.business.entities.Todo;
