@@ -1,6 +1,7 @@
 package com.personal.todo.business.app;
 
 import com.personal.todo.adapters.repo.TodoRepository;
+import com.personal.todo.adapters.repo.UserRepository;
 import com.personal.todo.business.app.dtos.CreateTodoParams;
 import com.personal.todo.business.app.dtos.UpdateTodoParams;
 import com.personal.todo.business.entities.Todo;
@@ -15,10 +16,18 @@ import java.util.List;
 public class TodoActions {
     @Autowired
     private TodoRepository todoRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     public Todo create(CreateTodoParams params) {
-        User user = new User("felix", "felix@gmail.com", "1234");
-        return new Todo (params.title(), TodoStatus.PENDENDING, user);
+        User user = userRepository.findById(params.userId())
+                .orElseThrow(() -> new RuntimeException("user not found"));
+
+        System.out.println(user);
+
+        Todo todo = new Todo(params.title(), TodoStatus.PENDENDING, user);
+
+        return todoRepository.save(todo);
     }
 
     public Todo readById(String id) {
