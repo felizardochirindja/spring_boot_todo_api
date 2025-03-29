@@ -38,7 +38,7 @@ public class UserController {
 
         UserApiResponse response = new UserApiResponse(
                 "sucess",
-                "user read sucessfully",
+                "user read successfully",
                 user
         );
 

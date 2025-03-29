@@ -22,8 +22,8 @@ public class TodoController {
         CreateTodoParams params = payload.createActionParams();
 
         TodoApiResponse response = new TodoApiResponse(
-                "sucess",
-                "todo created sucessfully",
+                "success",
+                "todo created successfully",
                 actions.create(params)
         );
 

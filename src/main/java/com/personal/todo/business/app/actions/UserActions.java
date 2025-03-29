@@ -1,6 +1,7 @@
 package com.personal.todo.business.app.actions;
 
 import com.personal.todo.adapters.repo.UserRepository;
+import com.personal.todo.business.app.exceptions.EntityNotFoundException;
 import com.personal.todo.business.app.params.CreateUserParams;
 import com.personal.todo.business.app.params.UpdateTodoParams;
 import com.personal.todo.business.entities.Todo;
@@ -23,7 +24,7 @@ public class UserActions {
 
     public User readById(int id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("user not found"));
+                .orElseThrow(() -> new EntityNotFoundException("user not found"));
     }
 
     public List<Todo> readAll() {

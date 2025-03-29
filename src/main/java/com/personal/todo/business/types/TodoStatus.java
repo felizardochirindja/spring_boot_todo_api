@@ -2,7 +2,7 @@ package com.personal.todo.business.types;
 
 public enum TodoStatus {
     COMPLETED("completa"),
-    PENDENDING("pendente");
+    PENDING("pendente");
 
     String status;
 

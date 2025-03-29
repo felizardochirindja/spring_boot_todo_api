@@ -2,6 +2,7 @@ package com.personal.todo.business.app.actions;
 
 import com.personal.todo.adapters.repo.TodoRepository;
 import com.personal.todo.adapters.repo.UserRepository;
+import com.personal.todo.business.app.exceptions.EntityNotFoundException;
 import com.personal.todo.business.app.params.CreateTodoParams;
 import com.personal.todo.business.app.params.UpdateTodoParams;
 import com.personal.todo.business.entities.Todo;
@@ -21,9 +22,9 @@ public class TodoActions {
 
     public Todo create(CreateTodoParams params) {
         User user = userRepository.findById(params.userId())
-                .orElseThrow(() -> new RuntimeException("user not found"));
+                .orElseThrow(() -> new EntityNotFoundException("user not found"));
 
-        Todo todo = params.createTodo(TodoStatus.PENDENDING, user);
+        Todo todo = params.createTodo(TodoStatus.PENDING, user);
 
         return todoRepository.save(todo);
     }
@@ -38,7 +39,7 @@ public class TodoActions {
 
     public Todo update(UpdateTodoParams params) {
         Todo todo = todoRepository.findById(params.id())
-                .orElseThrow(() -> new RuntimeException("todo not found"));
+                .orElseThrow(() -> new EntityNotFoundException("todo not found"));
 
         return null;
     }
