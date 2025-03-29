@@ -26,10 +26,6 @@ public class UserActions {
                 .orElseThrow(() -> new RuntimeException("user not found"));
     }
 
-    public Todo delete(String todoId, String userId) {
-        return null;
-    }
-
     public List<Todo> readAll() {
         return null;
     }

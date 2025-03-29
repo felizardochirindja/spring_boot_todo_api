@@ -32,10 +32,6 @@ public class TodoActions {
         return null;
     }
 
-    public Todo delete(String todoId, String userId) {
-        return null;
-    }
-
     public List<Todo> readAll() {
         return null;
     }
