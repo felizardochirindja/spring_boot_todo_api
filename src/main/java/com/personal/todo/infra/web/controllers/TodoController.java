@@ -2,9 +2,9 @@ package com.personal.todo.infra.web.controllers;
 
 import com.personal.todo.business.app.TodoActions;
 import com.personal.todo.business.app.dtos.CreateTodoParams;
-import com.personal.todo.business.entities.Todo;
+import com.personal.todo.business.app.dtos.UpdateTodoParams;
 import com.personal.todo.infra.web.controllers.payloads.CreateTodoPayload;
-import com.personal.todo.infra.web.controllers.responses.CreateTodoResponse;
+import com.personal.todo.infra.web.controllers.responses.TodoApiResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,10 +18,10 @@ public class TodoController {
     private TodoActions actions;
 
     @PostMapping
-    public ResponseEntity<CreateTodoResponse> create(@RequestBody @Valid CreateTodoPayload payload) {
-        CreateTodoParams params = new CreateTodoParams(payload.title(), payload.userId());
+    public ResponseEntity<TodoApiResponse> create(@RequestBody @Valid CreateTodoPayload payload) {
+        CreateTodoParams params = payload.createActionParams();
 
-        CreateTodoResponse response = new CreateTodoResponse(
+        TodoApiResponse response = new TodoApiResponse(
                 "sucess",
                 "todo created sucessfully",
                 actions.create(params)
@@ -41,12 +41,20 @@ public class TodoController {
     }
 
     @GetMapping
-    public String readAll() {
+    public String readAllByUserId() {
         return null;
     }
 
-    @PutMapping
-    public Todo update() {
-        return null;
+    @PutMapping("/{id}")
+    public ResponseEntity<TodoApiResponse> update(@RequestParam String title, @PathVariable Integer id) {
+        UpdateTodoParams params = new UpdateTodoParams(id, title);
+
+        TodoApiResponse response = new TodoApiResponse(
+                "success",
+                "todo updated successfuly",
+                actions.update(params)
+        );
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }

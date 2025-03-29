@@ -23,9 +23,7 @@ public class TodoActions {
         User user = userRepository.findById(params.userId())
                 .orElseThrow(() -> new RuntimeException("user not found"));
 
-        System.out.println(user);
-
-        Todo todo = new Todo(params.title(), TodoStatus.PENDENDING, user);
+        Todo todo = params.createTodo(TodoStatus.PENDENDING, user);
 
         return todoRepository.save(todo);
     }
@@ -43,6 +41,9 @@ public class TodoActions {
     }
 
     public Todo update(UpdateTodoParams params) {
+        Todo todo = todoRepository.findById(params.id())
+                .orElseThrow(() -> new RuntimeException("todo not found"));
+
         return null;
     }
 }
