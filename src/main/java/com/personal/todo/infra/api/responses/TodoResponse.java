@@ -4,10 +4,12 @@ import com.personal.todo.business.entities.Todo;
 import com.personal.todo.business.types.TodoStatus;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Getter
 public class TodoResponse {
     private String title;
     private TodoStatus status;
