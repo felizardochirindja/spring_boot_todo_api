@@ -49,16 +49,6 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @DeleteMapping
-    public String delete() {
-        return null;
-    }
-
-    @GetMapping
-    public String readAll() {
-        return null;
-    }
-
     @PutMapping
     public Todo update() {
         return null;
