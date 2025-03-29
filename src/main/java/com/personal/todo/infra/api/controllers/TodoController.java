@@ -5,6 +5,7 @@ import com.personal.todo.business.app.params.CreateTodoParams;
 import com.personal.todo.business.app.params.UpdateTodoParams;
 import com.personal.todo.infra.api.payloads.CreateTodoPayload;
 import com.personal.todo.infra.api.responses.TodoApiResponse;
+import com.personal.todo.infra.api.responses.TodoResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,7 +25,7 @@ public class TodoController {
         TodoApiResponse response = new TodoApiResponse(
                 "success",
                 "todo created successfully",
-                actions.create(params)
+                TodoResponse.fromEntity(actions.create(params))
         );
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
@@ -52,7 +53,7 @@ public class TodoController {
         TodoApiResponse response = new TodoApiResponse(
                 "success",
                 "todo updated successfuly",
-                actions.update(params)
+                TodoResponse.fromEntity(actions.update(params))
         );
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
