@@ -20,11 +20,7 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<UserApiResponse> create(@RequestBody @Valid CreateUserPayload payload) {
-        CreateUserParams params = new CreateUserParams(
-            payload.name(),
-            payload.email(),
-            payload.password()
-        );
+        CreateUserParams params = payload.createActionParams();
 
         User user = userActions.create(params);
         UserApiResponse response = new UserApiResponse(
