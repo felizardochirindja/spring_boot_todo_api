@@ -1,6 +1,6 @@
-package com.personal.todo.infra.web.controllers.payloads;
+package com.personal.todo.infra.api.payloads;
 
-import com.personal.todo.business.app.dtos.CreateTodoParams;
+import com.personal.todo.business.app.params.CreateTodoParams;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 

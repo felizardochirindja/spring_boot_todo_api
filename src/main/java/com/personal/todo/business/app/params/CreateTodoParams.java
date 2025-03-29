@@ -1,4 +1,4 @@
-package com.personal.todo.business.app.dtos;
+package com.personal.todo.business.app.params;
 
 import com.personal.todo.business.entities.Todo;
 import com.personal.todo.business.entities.User;

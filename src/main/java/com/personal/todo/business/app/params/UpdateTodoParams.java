@@ -1,4 +1,4 @@
-package com.personal.todo.business.app.dtos;
+package com.personal.todo.business.app.params;
 
 import io.micrometer.common.lang.NonNull;
 

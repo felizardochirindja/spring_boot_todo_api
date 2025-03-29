@@ -1,4 +1,4 @@
-package com.personal.todo.infra.web.controllers.payloads;
+package com.personal.todo.infra.api.payloads;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

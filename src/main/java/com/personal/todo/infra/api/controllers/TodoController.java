@@ -1,10 +1,10 @@
-package com.personal.todo.infra.web.controllers;
+package com.personal.todo.infra.api.controllers;
 
-import com.personal.todo.business.app.TodoActions;
-import com.personal.todo.business.app.dtos.CreateTodoParams;
-import com.personal.todo.business.app.dtos.UpdateTodoParams;
-import com.personal.todo.infra.web.controllers.payloads.CreateTodoPayload;
-import com.personal.todo.infra.web.controllers.responses.TodoApiResponse;
+import com.personal.todo.business.app.actions.TodoActions;
+import com.personal.todo.business.app.params.CreateTodoParams;
+import com.personal.todo.business.app.params.UpdateTodoParams;
+import com.personal.todo.infra.api.payloads.CreateTodoPayload;
+import com.personal.todo.infra.api.responses.TodoApiResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

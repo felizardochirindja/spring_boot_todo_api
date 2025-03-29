@@ -1,8 +1,8 @@
-package com.personal.todo.business.app;
+package com.personal.todo.business.app.actions;
 
 import com.personal.todo.adapters.repo.UserRepository;
-import com.personal.todo.business.app.dtos.CreateUserParams;
-import com.personal.todo.business.app.dtos.UpdateTodoParams;
+import com.personal.todo.business.app.params.CreateUserParams;
+import com.personal.todo.business.app.params.UpdateTodoParams;
 import com.personal.todo.business.entities.Todo;
 import com.personal.todo.business.entities.User;
 

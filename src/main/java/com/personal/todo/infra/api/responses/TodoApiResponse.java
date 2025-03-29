@@ -1,4 +1,4 @@
-package com.personal.todo.infra.web.controllers.responses;
+package com.personal.todo.infra.api.responses;
 
 import com.personal.todo.business.entities.Todo;
 
