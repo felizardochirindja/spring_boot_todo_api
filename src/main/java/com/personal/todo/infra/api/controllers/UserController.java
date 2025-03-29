@@ -6,6 +6,7 @@ import com.personal.todo.business.entities.Todo;
 import com.personal.todo.business.entities.User;
 import com.personal.todo.infra.api.payloads.CreateUserPayload;
 import com.personal.todo.infra.api.responses.UserApiResponse;
+import com.personal.todo.infra.api.responses.UserResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,7 +27,7 @@ public class UserController {
         UserApiResponse response = new UserApiResponse(
                 "sucess",
                 "user created successfully",
-                user
+                UserResponse.fromEntity(user)
         );
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
@@ -39,7 +40,7 @@ public class UserController {
         UserApiResponse response = new UserApiResponse(
                 "sucess",
                 "user read successfully",
-                user
+                UserResponse.fromEntity(user)
         );
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
