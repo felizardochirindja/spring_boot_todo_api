@@ -1,13 +1,13 @@
-package com.personal.todo.business.app.actions;
+package com.personal.taskie.business.app.actions;
 
-import com.personal.todo.adapters.repos.TodoRepository;
-import com.personal.todo.adapters.repos.UserRepository;
-import com.personal.todo.business.app.exceptions.EntityNotFoundException;
-import com.personal.todo.business.app.params.CreateTodoParams;
-import com.personal.todo.business.app.params.UpdateTodoParams;
-import com.personal.todo.business.entities.Todo;
-import com.personal.todo.business.entities.User;
-import com.personal.todo.business.types.TodoStatus;
+import com.personal.taskie.adapters.repos.TodoRepository;
+import com.personal.taskie.adapters.repos.UserRepository;
+import com.personal.taskie.business.app.exceptions.EntityNotFoundException;
+import com.personal.taskie.business.app.params.CreateTodoParams;
+import com.personal.taskie.business.app.params.UpdateTodoParams;
+import com.personal.taskie.business.entities.Todo;
+import com.personal.taskie.business.entities.User;
+import com.personal.taskie.business.types.TodoStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

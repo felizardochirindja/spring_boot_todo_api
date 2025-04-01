@@ -1,8 +1,8 @@
-package com.personal.todo.business.app.params;
+package com.personal.taskie.business.app.params;
 
-import com.personal.todo.business.entities.Todo;
-import com.personal.todo.business.entities.User;
-import com.personal.todo.business.types.TodoStatus;
+import com.personal.taskie.business.entities.Todo;
+import com.personal.taskie.business.entities.User;
+import com.personal.taskie.business.types.TodoStatus;
 import lombok.NonNull;
 
 public record CreateTodoParams(@NonNull String title, int userId) {

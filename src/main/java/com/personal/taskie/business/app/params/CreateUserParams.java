@@ -1,4 +1,4 @@
-package com.personal.todo.business.app.params;
+package com.personal.taskie.business.app.params;
 
 import jakarta.validation.constraints.NotNull;
 

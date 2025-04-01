@@ -1,6 +1,6 @@
-package com.personal.todo.business.entities;
+package com.personal.taskie.business.entities;
 
-import com.personal.todo.business.types.TodoStatus;
+import com.personal.taskie.business.types.TodoStatus;
 import jakarta.persistence.*;
 import lombok.*;
 

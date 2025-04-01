@@ -1,4 +1,4 @@
-package com.personal.todo;
+package com.personal.taskie;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

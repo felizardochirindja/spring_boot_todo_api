@@ -1,7 +1,7 @@
-package com.personal.todo.infra.platforms.api.responses;
+package com.personal.taskie.infra.platforms.api.responses;
 
-import com.personal.todo.business.entities.Todo;
-import com.personal.todo.business.types.TodoStatus;
+import com.personal.taskie.business.entities.Todo;
+import com.personal.taskie.business.types.TodoStatus;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

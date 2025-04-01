@@ -1,4 +1,4 @@
-package com.personal.todo.infra.platforms.api.payloads;
+package com.personal.taskie.infra.platforms.api.payloads;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

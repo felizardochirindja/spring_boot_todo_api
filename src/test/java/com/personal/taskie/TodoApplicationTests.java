@@ -1,4 +1,4 @@
-package com.personal.todo;
+package com.personal.taskie;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

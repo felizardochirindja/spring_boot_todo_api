@@ -1,4 +1,4 @@
-package com.personal.todo.infra.platforms.api.responses;
+package com.personal.taskie.infra.platforms.api.responses;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;

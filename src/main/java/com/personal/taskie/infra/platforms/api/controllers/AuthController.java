@@ -1,11 +1,11 @@
-package com.personal.todo.infra.platforms.api.controllers;
+package com.personal.taskie.infra.platforms.api.controllers;
 
-import com.personal.todo.adapters.repos.UserRepository;
-import com.personal.todo.business.app.ports.output.TokenGenerator;
-import com.personal.todo.business.entities.User;
-import com.personal.todo.infra.platforms.api.payloads.LoginPayload;
-import com.personal.todo.infra.platforms.api.payloads.SignupPayload;
-import com.personal.todo.infra.platforms.api.responses.LoginResponse;
+import com.personal.taskie.adapters.repos.UserRepository;
+import com.personal.taskie.business.app.ports.output.TokenGenerator;
+import com.personal.taskie.business.entities.User;
+import com.personal.taskie.infra.platforms.api.payloads.LoginPayload;
+import com.personal.taskie.infra.platforms.api.payloads.SignupPayload;
+import com.personal.taskie.infra.platforms.api.responses.LoginResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

@@ -1,6 +1,6 @@
-package com.personal.todo.infra.platforms.api.payloads;
+package com.personal.taskie.infra.platforms.api.payloads;
 
-import com.personal.todo.business.app.params.CreateUserParams;
+import com.personal.taskie.business.app.params.CreateUserParams;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 

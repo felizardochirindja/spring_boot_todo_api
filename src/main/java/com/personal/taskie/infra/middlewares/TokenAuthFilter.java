@@ -1,6 +1,6 @@
-package com.personal.todo.infra.middlewares;
+package com.personal.taskie.infra.middlewares;
 
-import com.personal.todo.business.app.ports.output.TokenGenerator;
+import com.personal.taskie.business.app.ports.output.TokenGenerator;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

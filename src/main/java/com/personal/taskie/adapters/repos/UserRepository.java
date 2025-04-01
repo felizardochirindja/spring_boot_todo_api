@@ -1,6 +1,6 @@
-package com.personal.todo.adapters.repos;
+package com.personal.taskie.adapters.repos;
 
-import com.personal.todo.business.entities.User;
+import com.personal.taskie.business.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

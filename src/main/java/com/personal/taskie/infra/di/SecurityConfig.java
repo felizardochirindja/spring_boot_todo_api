@@ -1,7 +1,7 @@
-package com.personal.todo.infra.di;
+package com.personal.taskie.infra.di;
 
-import com.personal.todo.adapters.repos.UserRepository;
-import com.personal.todo.infra.middlewares.TokenAuthFilter;
+import com.personal.taskie.adapters.repos.UserRepository;
+import com.personal.taskie.infra.middlewares.TokenAuthFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

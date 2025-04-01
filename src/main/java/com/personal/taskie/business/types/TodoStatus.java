@@ -1,4 +1,4 @@
-package com.personal.todo.business.types;
+package com.personal.taskie.business.types;
 
 public enum TodoStatus {
     COMPLETED("completa"),

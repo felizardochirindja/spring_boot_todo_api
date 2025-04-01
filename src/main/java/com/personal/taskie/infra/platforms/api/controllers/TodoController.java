@@ -1,11 +1,11 @@
-package com.personal.todo.infra.platforms.api.controllers;
+package com.personal.taskie.infra.platforms.api.controllers;
 
-import com.personal.todo.business.app.actions.TodoActions;
-import com.personal.todo.business.app.params.CreateTodoParams;
-import com.personal.todo.business.app.params.UpdateTodoParams;
-import com.personal.todo.infra.platforms.api.payloads.CreateTodoPayload;
-import com.personal.todo.infra.platforms.api.responses.TodoApiResponse;
-import com.personal.todo.infra.platforms.api.responses.TodoResponse;
+import com.personal.taskie.business.app.actions.TodoActions;
+import com.personal.taskie.business.app.params.CreateTodoParams;
+import com.personal.taskie.business.app.params.UpdateTodoParams;
+import com.personal.taskie.infra.platforms.api.payloads.CreateTodoPayload;
+import com.personal.taskie.infra.platforms.api.responses.TodoApiResponse;
+import com.personal.taskie.infra.platforms.api.responses.TodoResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

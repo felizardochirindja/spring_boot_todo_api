@@ -1,4 +1,4 @@
-package com.personal.todo.infra.platforms.api.responses;
+package com.personal.taskie.infra.platforms.api.responses;
 
 public record LoginResponse(String token) {
 }

@@ -1,6 +1,6 @@
-package com.personal.todo.business.app.ports.output;
+package com.personal.taskie.business.app.ports.output;
 
-import com.personal.todo.business.entities.User;
+import com.personal.taskie.business.entities.User;
 
 public interface TokenGenerator {
     String generateToken(User user);

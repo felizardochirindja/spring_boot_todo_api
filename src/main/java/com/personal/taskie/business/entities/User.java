@@ -1,4 +1,4 @@
-package com.personal.todo.business.entities;
+package com.personal.taskie.business.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
