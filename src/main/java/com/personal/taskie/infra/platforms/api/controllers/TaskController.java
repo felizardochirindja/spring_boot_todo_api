@@ -4,7 +4,7 @@ import com.personal.taskie.business.app.actions.TaskActions;
 import com.personal.taskie.business.app.params.CreateTodoParams;
 import com.personal.taskie.business.app.params.UpdateTodoParams;
 import com.personal.taskie.infra.platforms.api.payloads.CreateTodoPayload;
-import com.personal.taskie.infra.platforms.api.responses.TodoApiResponse;
+import com.personal.taskie.infra.platforms.api.responses.TaskApiResponse;
 import com.personal.taskie.infra.platforms.api.responses.TodoResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,16 +13,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/todos")
+@RequestMapping("/tasks")
 public final class TaskController {
     @Autowired
     private TaskActions actions;
 
     @PostMapping
-    public ResponseEntity<TodoApiResponse> create(@RequestBody @Valid CreateTodoPayload payload) {
+    public ResponseEntity<TaskApiResponse> create(@RequestBody @Valid CreateTodoPayload payload) {
         CreateTodoParams params = payload.createActionParams();
 
-        TodoApiResponse response = new TodoApiResponse(
+        TaskApiResponse response = new TaskApiResponse(
                 "success",
                 "todo created successfully",
                 TodoResponse.fromEntity(actions.create(params))
@@ -32,8 +32,16 @@ public final class TaskController {
     }
 
     @GetMapping("/{id}")
-    public String readById() {
-        return null;
+    public ResponseEntity<TaskApiResponse> readById(@PathVariable Integer id) {
+        var task = actions.readById(id);
+
+        TaskApiResponse response = new TaskApiResponse(
+                "sucess",
+                "task read successfully",
+                TodoResponse.fromEntity(task)
+        );
+
+        return ResponseEntity.ok().body(response);
     }
 
     @DeleteMapping
@@ -47,12 +55,12 @@ public final class TaskController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TodoApiResponse> update(@RequestParam String title, @PathVariable Integer id) {
+    public ResponseEntity<TaskApiResponse> update(@RequestParam String title, @PathVariable Integer id) {
         UpdateTodoParams params = new UpdateTodoParams(id, title);
 
-        TodoApiResponse response = new TodoApiResponse(
+        TaskApiResponse response = new TaskApiResponse(
                 "success",
-                "todo updated successfuly",
+                "task updated successfuly",
                 TodoResponse.fromEntity(actions.update(params))
         );
 

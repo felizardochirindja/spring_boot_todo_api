@@ -45,9 +45,4 @@ public final class UserController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
-
-    @PutMapping
-    public Task update() {
-        return null;
-    }
 }

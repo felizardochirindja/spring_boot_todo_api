@@ -29,8 +29,11 @@ public final class TaskActions {
         return taskRepository.save(task);
     }
 
-    public Task readById(String id) {
-        return null;
+    public Task readById(int id) {
+        if (id < 1) throw new RuntimeException("id could not be null");
+
+        return taskRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("task not found!"));
     }
 
     public List<Task> readAll() {
