@@ -8,7 +8,7 @@ import lombok.*;
 @Table(name = "todos")
 @Getter
 @NoArgsConstructor
-public final class Todo {
+public final class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -18,7 +18,7 @@ public final class Todo {
     @ManyToOne
     private User user;
 
-    public Todo(String title, TodoStatus status, User user) {
+    public Task(String title, TodoStatus status, User user) {
         this.title = title;
         this.status = status;
         this.user = user;

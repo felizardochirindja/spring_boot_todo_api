@@ -1,11 +1,11 @@
 package com.personal.taskie.business.app.actions;
 
-import com.personal.taskie.adapters.repos.TodoRepository;
+import com.personal.taskie.adapters.repos.TaskRepository;
 import com.personal.taskie.adapters.repos.UserRepository;
 import com.personal.taskie.business.app.exceptions.EntityNotFoundException;
 import com.personal.taskie.business.app.params.CreateTodoParams;
 import com.personal.taskie.business.app.params.UpdateTodoParams;
-import com.personal.taskie.business.entities.Todo;
+import com.personal.taskie.business.entities.Task;
 import com.personal.taskie.business.entities.User;
 import com.personal.taskie.business.types.TodoStatus;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,31 +14,31 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public final class TodoActions {
+public final class TaskActions {
     @Autowired
-    private TodoRepository todoRepository;
+    private TaskRepository taskRepository;
     @Autowired
     private UserRepository userRepository;
 
-    public Todo create(CreateTodoParams params) {
+    public Task create(CreateTodoParams params) {
         User user = userRepository.findById(params.userId())
                 .orElseThrow(() -> new EntityNotFoundException("user not found"));
 
-        Todo todo = params.createTodo(TodoStatus.PENDING, user);
+        Task task = params.createTodo(TodoStatus.PENDING, user);
 
-        return todoRepository.save(todo);
+        return taskRepository.save(task);
     }
 
-    public Todo readById(String id) {
+    public Task readById(String id) {
         return null;
     }
 
-    public List<Todo> readAll() {
+    public List<Task> readAll() {
         return null;
     }
 
-    public Todo update(UpdateTodoParams params) {
-        Todo todo = todoRepository.findById(params.id())
+    public Task update(UpdateTodoParams params) {
+        Task task = taskRepository.findById(params.id())
                 .orElseThrow(() -> new EntityNotFoundException("todo not found"));
 
         return null;

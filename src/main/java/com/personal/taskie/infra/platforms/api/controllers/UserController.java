@@ -2,7 +2,7 @@ package com.personal.taskie.infra.platforms.api.controllers;
 
 import com.personal.taskie.business.app.actions.UserActions;
 import com.personal.taskie.business.app.params.CreateUserParams;
-import com.personal.taskie.business.entities.Todo;
+import com.personal.taskie.business.entities.Task;
 import com.personal.taskie.business.entities.User;
 import com.personal.taskie.infra.platforms.api.payloads.CreateUserPayload;
 import com.personal.taskie.infra.platforms.api.responses.UserApiResponse;
@@ -47,7 +47,7 @@ public final class UserController {
     }
 
     @PutMapping
-    public Todo update() {
+    public Task update() {
         return null;
     }
 }

@@ -1,6 +1,6 @@
 package com.personal.taskie.infra.platforms.api.controllers;
 
-import com.personal.taskie.business.app.actions.TodoActions;
+import com.personal.taskie.business.app.actions.TaskActions;
 import com.personal.taskie.business.app.params.CreateTodoParams;
 import com.personal.taskie.business.app.params.UpdateTodoParams;
 import com.personal.taskie.infra.platforms.api.payloads.CreateTodoPayload;
@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/todos")
-public final class TodoController {
+public final class TaskController {
     @Autowired
-    private TodoActions actions;
+    private TaskActions actions;
 
     @PostMapping
     public ResponseEntity<TodoApiResponse> create(@RequestBody @Valid CreateTodoPayload payload) {

@@ -4,7 +4,7 @@ import com.personal.taskie.adapters.repos.UserRepository;
 import com.personal.taskie.business.app.exceptions.EntityNotFoundException;
 import com.personal.taskie.business.app.params.CreateUserParams;
 import com.personal.taskie.business.app.params.UpdateTodoParams;
-import com.personal.taskie.business.entities.Todo;
+import com.personal.taskie.business.entities.Task;
 import com.personal.taskie.business.entities.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,11 +27,11 @@ public final class UserActions {
                 .orElseThrow(() -> new EntityNotFoundException("user not found"));
     }
 
-    public List<Todo> readAll() {
+    public List<Task> readAll() {
         return null;
     }
 
-    public Todo update(UpdateTodoParams params) {
+    public Task update(UpdateTodoParams params) {
         return null;
     }
 }

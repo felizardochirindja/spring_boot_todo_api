@@ -1,6 +1,6 @@
 package com.personal.taskie.infra.platforms.api.responses;
 
-import com.personal.taskie.business.entities.Todo;
+import com.personal.taskie.business.entities.Task;
 import com.personal.taskie.business.types.TodoStatus;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -17,7 +17,7 @@ public class TodoResponse {
     @NotNull
     private TodoStatus status;
 
-    public static TodoResponse fromEntity(Todo todo) {
-        return new TodoResponse(todo.getTitle(), todo.getStatus());
+    public static TodoResponse fromEntity(Task task) {
+        return new TodoResponse(task.getTitle(), task.getStatus());
     }
 }
