@@ -2,6 +2,7 @@ package com.personal.taskie.infra.platforms.api.controllers;
 
 import com.personal.taskie.adapters.repos.UserRepository;
 import com.personal.taskie.business.app.ports.output.TokenGenerator;
+import com.personal.taskie.business.entities.AuthUser;
 import com.personal.taskie.business.entities.User;
 import com.personal.taskie.infra.platforms.api.payloads.LoginPayload;
 import com.personal.taskie.infra.platforms.api.payloads.SignupPayload;
@@ -39,7 +40,7 @@ public final class AuthController {
                 )
         );
 
-        String token = tokenGenerator.generateToken((User) authManager.getPrincipal());
+        String token = tokenGenerator.generateToken((AuthUser) authManager.getPrincipal());
 
         userRepository.findByEmail(payload.email())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));

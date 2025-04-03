@@ -1,7 +1,10 @@
-package com.personal.taskie.infra.di;
+package com.personal.taskie.infra.configs;
 
+import com.personal.taskie.infra.adapters.libs.JwtGeneratorAdapter;
 import com.personal.taskie.adapters.repos.UserRepository;
-import com.personal.taskie.infra.middlewares.TokenAuthFilter;
+import com.personal.taskie.business.app.ports.output.TokenGenerator;
+import com.personal.taskie.business.entities.AuthUser;
+import com.personal.taskie.infra.platforms.api.middlewares.TokenAuthFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -57,8 +60,14 @@ public class SecurityConfig {
     }
 
     @Bean
+    public TokenGenerator tokenGenerator() {
+        return new JwtGeneratorAdapter();
+    }
+
+    @Bean
     public UserDetailsService userDetailsService() {
         return email -> userRepository.findByEmail(email)
+                .map(AuthUser::new)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 }

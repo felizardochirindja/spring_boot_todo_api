@@ -1,8 +1,8 @@
 package com.personal.taskie.business.app.ports.output;
 
-import com.personal.taskie.business.entities.User;
+import com.personal.taskie.business.entities.AuthUser;
 
 public interface TokenGenerator {
-    String generateToken(User user);
+    String generateToken(AuthUser user);
     String validateToken(String token);
 }

@@ -1,4 +1,4 @@
-package com.personal.taskie.infra.middlewares;
+package com.personal.taskie.infra.platforms.api.middlewares;
 
 import com.personal.taskie.business.app.ports.output.TokenGenerator;
 import jakarta.servlet.FilterChain;
