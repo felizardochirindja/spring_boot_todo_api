@@ -40,6 +40,10 @@ public final class TaskActions {
         return null;
     }
 
+    public List<Task> readAllByUserId(int userId) {
+        return taskRepository.findAllByUserId(userId);
+    }
+
     public Task update(UpdateTaskParams params) {
         Task task = taskRepository.findById(params.id())
                 .orElseThrow(() -> new EntityNotFoundException("todo not found"));
