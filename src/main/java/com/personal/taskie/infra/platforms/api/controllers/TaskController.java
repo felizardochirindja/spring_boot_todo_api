@@ -1,9 +1,9 @@
 package com.personal.taskie.infra.platforms.api.controllers;
 
 import com.personal.taskie.business.app.actions.TaskActions;
-import com.personal.taskie.business.app.params.CreateTodoParams;
-import com.personal.taskie.business.app.params.UpdateTodoParams;
-import com.personal.taskie.infra.platforms.api.payloads.CreateTodoPayload;
+import com.personal.taskie.business.app.params.CreateTaskParams;
+import com.personal.taskie.infra.platforms.api.payloads.CreateTaskPayload;
+import com.personal.taskie.infra.platforms.api.payloads.UpdateTaskPayload;
 import com.personal.taskie.infra.platforms.api.responses.TaskApiResponse;
 import com.personal.taskie.infra.platforms.api.responses.TodoResponse;
 import jakarta.validation.Valid;
@@ -19,8 +19,8 @@ public final class TaskController {
     private TaskActions actions;
 
     @PostMapping
-    public ResponseEntity<TaskApiResponse> create(@RequestBody @Valid CreateTodoPayload payload) {
-        CreateTodoParams params = payload.createActionParams();
+    public ResponseEntity<TaskApiResponse> create(@RequestBody @Valid CreateTaskPayload payload) {
+        CreateTaskParams params = payload.createActionParams();
 
         TaskApiResponse response = new TaskApiResponse(
                 "success",
@@ -49,14 +49,9 @@ public final class TaskController {
         return null;
     }
 
-    @GetMapping
-    public String readAllByUserId() {
-        return null;
-    }
-
     @PutMapping("/{id}")
-    public ResponseEntity<TaskApiResponse> update(@RequestParam String title, @PathVariable Integer id) {
-        UpdateTodoParams params = new UpdateTodoParams(id, title);
+    public ResponseEntity<TaskApiResponse> update(@PathVariable Integer id, @RequestBody UpdateTaskPayload payload) {
+        var params = payload.createActionParams(id);
 
         TaskApiResponse response = new TaskApiResponse(
                 "success",
@@ -64,6 +59,6 @@ public final class TaskController {
                 TodoResponse.fromEntity(actions.update(params))
         );
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        return ResponseEntity.ok(response);
     }
 }

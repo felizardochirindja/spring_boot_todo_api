@@ -3,8 +3,8 @@ package com.personal.taskie.business.app.actions;
 import com.personal.taskie.adapters.repos.TaskRepository;
 import com.personal.taskie.adapters.repos.UserRepository;
 import com.personal.taskie.business.app.exceptions.EntityNotFoundException;
-import com.personal.taskie.business.app.params.CreateTodoParams;
-import com.personal.taskie.business.app.params.UpdateTodoParams;
+import com.personal.taskie.business.app.params.CreateTaskParams;
+import com.personal.taskie.business.app.params.UpdateTaskParams;
 import com.personal.taskie.business.entities.Task;
 import com.personal.taskie.business.entities.User;
 import com.personal.taskie.business.types.TodoStatus;
@@ -20,7 +20,7 @@ public final class TaskActions {
     @Autowired
     private UserRepository userRepository;
 
-    public Task create(CreateTodoParams params) {
+    public Task create(CreateTaskParams params) {
         User user = userRepository.findById(params.userId())
                 .orElseThrow(() -> new EntityNotFoundException("user not found"));
 
@@ -40,10 +40,13 @@ public final class TaskActions {
         return null;
     }
 
-    public Task update(UpdateTodoParams params) {
+    public Task update(UpdateTaskParams params) {
         Task task = taskRepository.findById(params.id())
                 .orElseThrow(() -> new EntityNotFoundException("todo not found"));
 
-        return null;
+        task.setTitle(params.title());
+        task.setStatus(params.status());
+
+        return taskRepository.save(task);
     }
 }

@@ -3,7 +3,8 @@ package com.personal.taskie.business.app.actions;
 import com.personal.taskie.adapters.repos.UserRepository;
 import com.personal.taskie.business.app.exceptions.EntityNotFoundException;
 import com.personal.taskie.business.app.params.CreateUserParams;
-import com.personal.taskie.business.app.params.UpdateTodoParams;
+import com.personal.taskie.business.app.params.SignupParams;
+import com.personal.taskie.business.app.params.UpdateTaskParams;
 import com.personal.taskie.business.entities.Task;
 import com.personal.taskie.business.entities.User;
 
@@ -18,7 +19,10 @@ public final class UserActions {
     private UserRepository userRepository;
 
     public User create(CreateUserParams params) {
-        User user = new User(params.name(), params.email(), params.password());
+        userRepository.findByEmail(params.email())
+                        .orElseThrow(() -> new RuntimeException("user not found!"));
+
+        User user = params.createUser();
         return userRepository.save(user);
     }
 
@@ -31,7 +35,7 @@ public final class UserActions {
         return null;
     }
 
-    public Task update(UpdateTodoParams params) {
+    public Task update(UpdateTaskParams params) {
         return null;
     }
 }

@@ -1,9 +1,8 @@
 package com.personal.taskie.business.app.params;
 
-import com.personal.taskie.business.entities.User;
 import jakarta.validation.constraints.NotNull;
 
-public record CreateUserParams (
+public record SignupParams(
         @NotNull
         String name,
         @NotNull
@@ -11,7 +10,4 @@ public record CreateUserParams (
         @NotNull
         String password
 ) {
-    public User createUser() {
-        return new User(name, email, password);
-    }
 }
