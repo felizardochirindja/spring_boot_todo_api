@@ -24,4 +24,11 @@ public final class Task {
         this.status = status;
         this.user = user;
     }
+
+    public Task(Integer id, String title, TodoStatus status, User user) {
+        this.id = id;
+        this.title = title;
+        this.status = status;
+        this.user = user;
+    }
 }
