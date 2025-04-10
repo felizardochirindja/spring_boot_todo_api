@@ -41,6 +41,9 @@ public final class TaskActions {
     }
 
     public List<Task> readAllByUserId(int userId) {
+        userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("user not found"));
+
         return taskRepository.findAllByUserId(userId);
     }
 
