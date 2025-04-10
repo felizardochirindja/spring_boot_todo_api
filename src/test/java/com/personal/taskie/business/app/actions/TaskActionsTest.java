@@ -4,6 +4,7 @@ import com.personal.taskie.adapters.repos.TaskRepository;
 import com.personal.taskie.adapters.repos.UserRepository;
 import com.personal.taskie.business.app.exceptions.EntityNotFoundException;
 import com.personal.taskie.business.app.params.CreateTaskParams;
+import com.personal.taskie.business.app.params.UpdateTaskParams;
 import com.personal.taskie.business.entities.Task;
 import com.personal.taskie.business.entities.User;
 import com.personal.taskie.business.types.TodoStatus;
@@ -65,5 +66,26 @@ class TaskActionsTest {
         // Act & Assert
         assertThrows(EntityNotFoundException.class, () -> taskActions.create(params));
         verify(userRepository).findById(userId);
+    }
+
+    @Test
+    void shouldUpdateTaskSuccessfully() {
+        // arrange
+        int taskId = 1;
+        User user = new User("felix", "felix@gmail.com", "1234");
+        Task expectedTask = new Task(taskId, "nova tarefa", TodoStatus.PENDING, user);
+
+        when(taskRepository.findById(taskId)).thenReturn(Optional.of(expectedTask));
+        when(taskRepository.save(expectedTask)).thenReturn(expectedTask);
+
+        var params =  new UpdateTaskParams(taskId, "title", TodoStatus.PENDING);
+
+        // act
+        Task updatedTask = taskActions.update(params);
+
+        // assert
+        assertEquals(expectedTask, updatedTask);
+        verify(taskRepository).findById(taskId);
+        verify(taskRepository).save(expectedTask);
     }
 }
