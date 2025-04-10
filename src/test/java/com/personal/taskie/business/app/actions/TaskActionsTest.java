@@ -20,6 +20,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.List;
 import java.util.Optional;
 
 @SpringBootTest
@@ -112,6 +113,29 @@ class TaskActionsTest {
         // act & assert
         assertThrows(EntityNotFoundException.class, () -> taskActions.readAllByUserId(userId));
         verify(userRepository).findById(userId);
+    }
+
+    @Test
+    void shouldRealAllByUserIdSuccessfully() {
+        // arrange
+        int userId = 1;
+
+        var expectedTasks = List.of(
+                new Task(),
+                new Task()
+        );
+
+        when(userRepository.findById(userId)).thenReturn(Optional.of(new User()));
+        when(taskRepository.findAllByUserId(userId)).thenReturn(expectedTasks);
+        
+        // act
+        var actualTasks = taskActions.readAllByUserId(userId);
+
+        // assert
+        assertNotNull(expectedTasks);
+        assertEquals(expectedTasks, actualTasks);
+        verify(userRepository).findById(userId);
+        verify(taskRepository).findAllByUserId(userId);
     }
 
     @Test
