@@ -7,7 +7,6 @@ import lombok.*;
 @Entity
 @Table(name = "todos")
 @Getter
-@Setter
 @NoArgsConstructor
 public final class Task {
     @Id
