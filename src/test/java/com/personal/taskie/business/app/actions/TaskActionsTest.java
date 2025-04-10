@@ -91,7 +91,7 @@ class TaskActionsTest {
     }
 
     @Test
-    void updateTaskShouldThowExceptionWhenTaskNotFound() {
+    void updateTaskShouldThrowExceptionWhenTaskNotFound() {
         // assert
         int taskId = 1;
         var params = mock(UpdateTaskParams.class);
