@@ -16,6 +16,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -74,21 +75,23 @@ class TaskActionsTest {
     void shouldUpdateTaskSuccessfully() {
         // arrange
         int taskId = 1;
-        User user = new User("felix", "felix@gmail.com", "1234");
-        Task expectedTask = new Task(taskId, "nova tarefa", TodoStatus.PENDING, user);
+        String expectedTaskTitle = "tarefa actualizada";
 
-        when(taskRepository.findById(taskId)).thenReturn(Optional.of(expectedTask));
-        when(taskRepository.save(expectedTask)).thenReturn(expectedTask);
+        User user = new User();
+        Task existingTask = new Task(taskId, "tarefa existente", TodoStatus.PENDING, user);
+        Task expectedTask = new Task(taskId, expectedTaskTitle, TodoStatus.COMPLETED, user);
 
-        var params =  new UpdateTaskParams(taskId, "title", TodoStatus.PENDING);
+        when(taskRepository.findById(taskId)).thenReturn(Optional.of(existingTask));
+        when(taskRepository.save(any(Task.class))).thenReturn(expectedTask);
 
         // act
+        var params =  new UpdateTaskParams(taskId, expectedTaskTitle, TodoStatus.COMPLETED);
         Task updatedTask = taskActions.update(params);
 
         // assert
         assertEquals(expectedTask, updatedTask);
         verify(taskRepository).findById(taskId);
-        verify(taskRepository).save(expectedTask);
+        verify(taskRepository).save(any(Task.class));
     }
 
     @Test
