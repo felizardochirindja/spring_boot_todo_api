@@ -19,9 +19,9 @@ public final class Task {
     @ManyToOne
     private User user;
 
-    public Task(String title, TodoStatus status, User user) {
+    public Task(String title, User user) {
         this.title = title;
-        this.status = status;
+        this.status = TodoStatus.PENDING;
         this.user = user;
     }
 

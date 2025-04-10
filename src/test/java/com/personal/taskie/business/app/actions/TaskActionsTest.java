@@ -37,12 +37,12 @@ class TaskActionsTest {
         // Arrange
         int userId = 1;
         User user = new User("John", "john@gmail.com", "1234");
-        Task expectedTask = new Task("Example Task", TodoStatus.PENDING, user);
+        Task expectedTask = new Task("Example Task", user);
 
         CreateTaskParams params = mock(CreateTaskParams.class);
 
         when(params.userId()).thenReturn(userId);
-        when(params.createTodo(TodoStatus.PENDING, user)).thenReturn(expectedTask);
+        when(params.createTask(user)).thenReturn(expectedTask);
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
         when(taskRepository.save(expectedTask)).thenReturn(expectedTask);

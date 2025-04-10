@@ -7,7 +7,6 @@ import com.personal.taskie.business.app.params.CreateTaskParams;
 import com.personal.taskie.business.app.params.UpdateTaskParams;
 import com.personal.taskie.business.entities.Task;
 import com.personal.taskie.business.entities.User;
-import com.personal.taskie.business.types.TodoStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +23,7 @@ public final class TaskActions {
         User user = userRepository.findById(params.userId())
                 .orElseThrow(() -> new EntityNotFoundException("user not found"));
 
-        Task task = params.createTodo(TodoStatus.PENDING, user);
+        Task task = params.createTask(user);
 
         return taskRepository.save(task);
     }
