@@ -113,4 +113,14 @@ class TaskActionsTest {
         assertThrows(EntityNotFoundException.class, () -> taskActions.readAllByUserId(userId));
         verify(userRepository).findById(userId);
     }
+
+    @Test
+    void readByIdShouldThrowExceptionWhenUserIdIsLessThanOne()
+    {
+        // arrange
+        int taskId = 0;
+
+        // act & assert
+        assertThrows(RuntimeException.class, () -> taskActions.readById(taskId));
+    }
 }
