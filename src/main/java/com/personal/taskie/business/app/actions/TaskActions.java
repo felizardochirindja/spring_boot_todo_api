@@ -47,11 +47,10 @@ public final class TaskActions {
     }
 
     public Task update(UpdateTaskParams params) {
-        Task task = taskRepository.findById(params.id())
+        Task existingTask = taskRepository.findById(params.id())
                 .orElseThrow(() -> new EntityNotFoundException("todo not found"));
 
-        task.setTitle(params.title());
-        task.setStatus(params.status());
+        Task task = params.createTask(existingTask.getUser());
 
         return taskRepository.save(task);
     }
