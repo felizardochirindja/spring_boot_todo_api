@@ -102,4 +102,15 @@ class TaskActionsTest {
         assertThrows(EntityNotFoundException.class, () -> taskActions.update(params));
         verify(taskRepository).findById(taskId);
     }
+
+    @Test
+    void readAllByUserIdShouldThrowExceptionWhenUserNotFound() {
+        // arrange
+        int userId = 1;
+        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+
+        // act & assert
+        assertThrows(EntityNotFoundException.class, () -> taskActions.readAllByUserId(userId));
+        verify(userRepository).findById(userId);
+    }
 }
