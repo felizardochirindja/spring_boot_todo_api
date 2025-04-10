@@ -15,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -55,7 +56,7 @@ class TaskActionsTest {
     }
 
     @Test
-    void shouldThrowExceptionWhenUserNotFound() {
+    void createTaskShouldThrowExceptionWhenUserNotFound() {
         // Arrange
         int userId = 1;
         CreateTaskParams params = mock(CreateTaskParams.class);
@@ -87,5 +88,18 @@ class TaskActionsTest {
         assertEquals(expectedTask, updatedTask);
         verify(taskRepository).findById(taskId);
         verify(taskRepository).save(expectedTask);
+    }
+
+    @Test
+    void updateTaskShouldThowExceptionWhenTaskNotFound() {
+        // assert
+        int taskId = 1;
+        var params = mock(UpdateTaskParams.class);
+        when(params.id()).thenReturn(taskId);
+        when(taskRepository.findById(taskId)).thenReturn(Optional.empty());
+
+        // act & assert
+        assertThrows(EntityNotFoundException.class, () -> taskActions.update(params));
+        verify(taskRepository).findById(taskId);
     }
 }
