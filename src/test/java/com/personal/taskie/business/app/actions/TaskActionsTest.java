@@ -123,4 +123,12 @@ class TaskActionsTest {
         // act & assert
         assertThrows(RuntimeException.class, () -> taskActions.readById(taskId));
     }
+
+    @Test
+    void readByIdShoudThrowExceptionWenTaskNotFound() {
+        int taskId = 1;
+        when(taskRepository.findById(taskId)).thenReturn(Optional.empty());
+        assertThrows(EntityNotFoundException.class, () -> taskActions.readById(taskId));
+        verify(taskRepository).findById(taskId);
+    }
 }
