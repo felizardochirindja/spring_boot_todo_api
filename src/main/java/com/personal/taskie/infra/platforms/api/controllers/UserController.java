@@ -1,7 +1,7 @@
 package com.personal.taskie.infra.platforms.api.controllers;
 
 import com.personal.taskie.adapters.repos.UserRepository;
-import com.personal.taskie.business.app.params.ReadRemoteTaskOutput;
+import com.personal.taskie.business.app.params.output.ReadRemoteTasksOutput;
 import com.personal.taskie.business.app.actions.TaskActions;
 import com.personal.taskie.business.app.actions.UserActions;
 import com.personal.taskie.business.app.ports.output.remotetask.RemoteTaskSyncFetcher;
@@ -53,15 +53,15 @@ public final class UserController {
     public ResponseEntity<RemoteTasksApiResponse> readAllRemoteTasksByUserId() {
         int userId = 1;
 
-        ReadRemoteTaskOutput output = taskActions.readRemoteTasksByUserId(userId);
+        ReadRemoteTasksOutput output = taskActions.readRemoteTasksByUserId(userId);
 
-        List<RemoteTaskApi> taskApiList = output.todos()
+        List<RemoteTaskApi> taskList = output.tasks()
                 .stream()
                 .map(RemoteTaskApi::fromEntity)
                 .toList();
 
         var response = new RemoteTasksApiResponse(
-                taskApiList,
+                taskList,
                 output.total(),
                 output.skip(),
                 output.limit(),

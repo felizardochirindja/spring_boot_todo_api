@@ -1,7 +1,7 @@
 package com.personal.taskie.infra.platforms.api.controllers;
 
 import com.personal.taskie.business.app.actions.TaskActions;
-import com.personal.taskie.business.app.params.CreateTaskInput;
+import com.personal.taskie.business.app.params.input.CreateTaskInput;
 import com.personal.taskie.infra.platforms.api.payloads.CreateTaskPayload;
 import com.personal.taskie.infra.platforms.api.payloads.UpdateTaskPayload;
 import com.personal.taskie.infra.platforms.api.responses.TaskApiResponse;

@@ -1,8 +1,8 @@
 package com.personal.taskie.business.app.actions;
 
 import com.personal.taskie.adapters.repos.UserRepository;
-import com.personal.taskie.business.app.params.CreateUserInput;
-import com.personal.taskie.business.app.params.SignupInput;
+import com.personal.taskie.business.app.params.input.CreateUserInput;
+import com.personal.taskie.business.app.params.input.SignupInput;
 import com.personal.taskie.business.app.ports.input.UserCreator;
 import com.personal.taskie.business.app.ports.output.TokenGenerator;
 import com.personal.taskie.business.entities.AuthUser;

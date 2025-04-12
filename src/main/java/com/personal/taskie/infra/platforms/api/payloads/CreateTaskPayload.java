@@ -1,6 +1,6 @@
 package com.personal.taskie.infra.platforms.api.payloads;
 
-import com.personal.taskie.business.app.params.CreateTaskInput;
+import com.personal.taskie.business.app.params.input.CreateTaskInput;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 

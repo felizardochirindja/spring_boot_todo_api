@@ -1,7 +1,7 @@
 package com.personal.taskie.infra.platforms.api.controllers;
 
 import com.personal.taskie.business.app.actions.AuthActions;
-import com.personal.taskie.business.app.params.SignupInput;
+import com.personal.taskie.business.app.params.input.SignupInput;
 import com.personal.taskie.business.entities.User;
 import com.personal.taskie.infra.platforms.api.payloads.LoginPayload;
 import com.personal.taskie.infra.platforms.api.payloads.SignupPayload;

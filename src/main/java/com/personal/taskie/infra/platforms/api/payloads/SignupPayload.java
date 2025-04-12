@@ -1,6 +1,6 @@
 package com.personal.taskie.infra.platforms.api.payloads;
 
-import com.personal.taskie.business.app.params.SignupInput;
+import com.personal.taskie.business.app.params.input.SignupInput;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 

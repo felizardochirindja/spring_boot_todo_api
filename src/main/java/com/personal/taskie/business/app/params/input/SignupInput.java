@@ -1,4 +1,4 @@
-package com.personal.taskie.business.app.params;
+package com.personal.taskie.business.app.params.input;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

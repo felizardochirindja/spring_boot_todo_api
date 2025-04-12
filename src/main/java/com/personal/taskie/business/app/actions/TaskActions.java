@@ -2,10 +2,10 @@ package com.personal.taskie.business.app.actions;
 
 import com.personal.taskie.adapters.repos.TaskRepository;
 import com.personal.taskie.adapters.repos.UserRepository;
-import com.personal.taskie.business.app.params.ReadRemoteTaskOutput;
+import com.personal.taskie.business.app.params.output.ReadRemoteTasksOutput;
 import com.personal.taskie.business.entities.exceptions.EntityNotFoundException;
-import com.personal.taskie.business.app.params.CreateTaskInput;
-import com.personal.taskie.business.app.params.UpdateTaskInput;
+import com.personal.taskie.business.app.params.input.CreateTaskInput;
+import com.personal.taskie.business.app.params.input.UpdateTaskInput;
 import com.personal.taskie.business.app.ports.output.remotetask.RemoteTaskSyncFetcher;
 import com.personal.taskie.business.entities.Task;
 import com.personal.taskie.business.entities.User;
@@ -56,13 +56,13 @@ public final class TaskActions {
         return taskRepository.save(task);
     }
 
-    public ReadRemoteTaskOutput readRemoteTasksByUserId(int userId) {
+    public ReadRemoteTasksOutput readRemoteTasksByUserId(int userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("user not found"));
 
         RemoteTasksResponse response = remoteTaskSyncFetcher.fetchTasksByUserId(userId);
 
-        return new ReadRemoteTaskOutput(
+        return new ReadRemoteTasksOutput(
                 response.todos(),
                 response.total(),
                 response.skip(),
