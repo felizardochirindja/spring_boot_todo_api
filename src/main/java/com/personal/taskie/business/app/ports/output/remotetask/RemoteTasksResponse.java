@@ -1,4 +1,4 @@
-package com.personal.taskie.infra.adapters.libs.dummyjson;
+package com.personal.taskie.business.app.ports.output.remotetask;
 
 import java.util.List;
 

@@ -4,7 +4,7 @@ import com.personal.taskie.business.entities.User;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public record CreateUserParams (
+public record CreateUserInput(
         @NotNull
         @NotBlank
         String name,

@@ -1,8 +1,8 @@
 package com.personal.taskie.business.app.actions;
 
 import com.personal.taskie.adapters.repos.UserRepository;
-import com.personal.taskie.business.app.params.CreateUserParams;
-import com.personal.taskie.business.app.params.SignupParams;
+import com.personal.taskie.business.app.params.CreateUserInput;
+import com.personal.taskie.business.app.params.SignupInput;
 import com.personal.taskie.business.app.ports.output.TokenGenerator;
 import com.personal.taskie.business.entities.AuthUser;
 import com.personal.taskie.business.entities.User;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 @Service
 public final class AuthActions {
     @Autowired
-    private UserActions userActions;
+    private CreateUserAction createUserAction;
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
@@ -26,10 +26,10 @@ public final class AuthActions {
     @Autowired
     private UserRepository userRepository;
 
-    public User signUp(SignupParams params) {
+    public User signUp(SignupInput params) {
         String passwordHash = passwordEncoder.encode(params.password());
 
-        return userActions.create(new CreateUserParams(
+        return createUserAction.execute(new CreateUserInput(
                 params.name(),
                 params.email(),
                 passwordHash

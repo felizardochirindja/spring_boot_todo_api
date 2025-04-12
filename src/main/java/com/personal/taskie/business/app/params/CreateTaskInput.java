@@ -4,9 +4,8 @@ import com.personal.taskie.business.entities.Task;
 import com.personal.taskie.business.entities.User;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.NonNull;
 
-public record CreateTaskParams(
+public record CreateTaskInput(
         @NotNull
         @NotBlank
         String title,

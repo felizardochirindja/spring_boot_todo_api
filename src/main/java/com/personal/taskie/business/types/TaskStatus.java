@@ -1,12 +1,12 @@
 package com.personal.taskie.business.types;
 
-public enum TodoStatus {
+public enum TaskStatus {
     COMPLETED("completa"),
     PENDING("pendente");
 
     public final String status;
 
-    TodoStatus(String status) {
+    TaskStatus(String status) {
         this.status = status;
     }
 }

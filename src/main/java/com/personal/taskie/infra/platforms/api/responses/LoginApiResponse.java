@@ -1,4 +1,4 @@
 package com.personal.taskie.infra.platforms.api.responses;
 
-public record LoginResponse(String token) {
+public record LoginApiResponse(String token) {
 }

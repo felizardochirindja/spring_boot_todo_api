@@ -2,11 +2,14 @@ package com.personal.taskie.business.app.actions;
 
 import com.personal.taskie.adapters.repos.TaskRepository;
 import com.personal.taskie.adapters.repos.UserRepository;
-import com.personal.taskie.business.app.exceptions.EntityNotFoundException;
-import com.personal.taskie.business.app.params.CreateTaskParams;
-import com.personal.taskie.business.app.params.UpdateTaskParams;
+import com.personal.taskie.business.app.params.ReadRemoteTaskOutput;
+import com.personal.taskie.business.entities.exceptions.EntityNotFoundException;
+import com.personal.taskie.business.app.params.CreateTaskInput;
+import com.personal.taskie.business.app.params.UpdateTaskInput;
+import com.personal.taskie.business.app.ports.output.remotetask.RemoteTaskSyncFetcher;
 import com.personal.taskie.business.entities.Task;
 import com.personal.taskie.business.entities.User;
+import com.personal.taskie.business.app.ports.output.remotetask.RemoteTasksResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +21,10 @@ public final class TaskActions {
     private TaskRepository taskRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private RemoteTaskSyncFetcher remoteTaskSyncFetcher;
 
-    public Task create(CreateTaskParams params) {
+    public Task create(CreateTaskInput params) {
         User user = userRepository.findById(params.userId())
                 .orElseThrow(() -> new EntityNotFoundException("user not found"));
 
@@ -35,10 +40,6 @@ public final class TaskActions {
                 .orElseThrow(() -> new EntityNotFoundException("task not found!"));
     }
 
-    public List<Task> readAll() {
-        return null;
-    }
-
     public List<Task> readAllByUserId(int userId) {
         userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("user not found"));
@@ -46,12 +47,27 @@ public final class TaskActions {
         return taskRepository.findAllByUserId(userId);
     }
 
-    public Task update(UpdateTaskParams params) {
+    public Task update(UpdateTaskInput params) {
         Task existingTask = taskRepository.findById(params.id())
                 .orElseThrow(() -> new EntityNotFoundException("todo not found"));
 
         Task task = params.createTask(existingTask.getUser());
 
         return taskRepository.save(task);
+    }
+
+    public ReadRemoteTaskOutput readRemoteTasksByUserId(int userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("user not found"));
+
+        RemoteTasksResponse response = remoteTaskSyncFetcher.fetchTasksByUserId(userId);
+
+        return new ReadRemoteTaskOutput(
+                response.todos(),
+                response.total(),
+                response.skip(),
+                response.limit(),
+                user
+        );
     }
 }

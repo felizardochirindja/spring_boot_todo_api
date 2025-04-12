@@ -10,13 +10,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
-public class UserResponse {
+public class UserApi {
     @NotNull
     private String name;
     @NotNull
     private String email;
 
-    public static UserResponse fromEntity(User user) {
-        return new UserResponse(user.getName(), user.getEmail());
+    public static UserApi fromEntity(User user) {
+        return new UserApi(user.getName(), user.getEmail());
     }
 }

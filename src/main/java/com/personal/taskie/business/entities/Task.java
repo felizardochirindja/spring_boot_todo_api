@@ -1,6 +1,6 @@
 package com.personal.taskie.business.entities;
 
-import com.personal.taskie.business.types.TodoStatus;
+import com.personal.taskie.business.types.TaskStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -14,17 +14,17 @@ public final class Task {
     private Integer id;
     private String title;
     @Enumerated(EnumType.STRING)
-    private TodoStatus status;
+    private TaskStatus status;
     @ManyToOne
     private User user;
 
     public Task(String title, User user) {
         this.title = title;
-        this.status = TodoStatus.PENDING;
+        this.status = TaskStatus.PENDING;
         this.user = user;
     }
 
-    public Task(Integer id, String title, TodoStatus status, User user) {
+    public Task(Integer id, String title, TaskStatus status, User user) {
         this.id = id;
         this.title = title;
         this.status = status;

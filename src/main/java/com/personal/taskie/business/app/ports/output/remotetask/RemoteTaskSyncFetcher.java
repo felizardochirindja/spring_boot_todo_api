@@ -1,6 +1,5 @@
-package com.personal.taskie.business.app.ports.output;
+package com.personal.taskie.business.app.ports.output.remotetask;
 
-import com.personal.taskie.infra.adapters.libs.dummyjson.RemoteTasksResponse;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 

@@ -1,6 +1,6 @@
 package com.personal.taskie.infra.configs;
 
-import com.personal.taskie.infra.adapters.libs.JwtGeneratorAdapter;
+import com.personal.taskie.infra.adapters.libs.JwtGenerator;
 import com.personal.taskie.adapters.repos.UserRepository;
 import com.personal.taskie.business.app.ports.output.TokenGenerator;
 import com.personal.taskie.business.entities.AuthUser;
@@ -43,7 +43,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/signup").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/tasks").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/users/tasks/remote").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(tokenAuthFilter, UsernamePasswordAuthenticationFilter.class)
@@ -62,7 +62,7 @@ public class SecurityConfig {
 
     @Bean
     public TokenGenerator tokenGenerator() {
-        return new JwtGeneratorAdapter();
+        return new JwtGenerator();
     }
 
     @Bean

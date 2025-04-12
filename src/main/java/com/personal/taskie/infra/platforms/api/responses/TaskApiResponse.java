@@ -10,6 +10,6 @@ public record TaskApiResponse(
         String message,
         @NotNull
         @Valid
-        TodoResponse todo
+        TaskApi task
 ) {
 }

@@ -1,4 +1,4 @@
-package com.personal.taskie.business.app.exceptions;
+package com.personal.taskie.business.entities.exceptions;
 
 public final class EntityNotFoundException extends RuntimeException {
     public EntityNotFoundException(String message) {

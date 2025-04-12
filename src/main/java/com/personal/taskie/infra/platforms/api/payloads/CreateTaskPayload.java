@@ -1,6 +1,6 @@
 package com.personal.taskie.infra.platforms.api.payloads;
 
-import com.personal.taskie.business.app.params.CreateTaskParams;
+import com.personal.taskie.business.app.params.CreateTaskInput;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -11,7 +11,7 @@ public record CreateTaskPayload(
         @NotNull(message = "userId cannot be null")
         Integer userId
 ) {
-        public CreateTaskParams createActionParams() {
-                return new CreateTaskParams(title, userId);
+        public CreateTaskInput createActionParams() {
+                return new CreateTaskInput(title, userId);
         }
 }

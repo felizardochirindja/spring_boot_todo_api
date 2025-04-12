@@ -2,21 +2,20 @@ package com.personal.taskie.business.app.actions;
 
 import com.personal.taskie.adapters.repos.TaskRepository;
 import com.personal.taskie.adapters.repos.UserRepository;
-import com.personal.taskie.business.app.exceptions.EntityNotFoundException;
-import com.personal.taskie.business.app.params.CreateTaskParams;
-import com.personal.taskie.business.app.params.UpdateTaskParams;
+import com.personal.taskie.business.entities.exceptions.EntityNotFoundException;
+import com.personal.taskie.business.app.params.CreateTaskInput;
+import com.personal.taskie.business.app.params.UpdateTaskInput;
 import com.personal.taskie.business.entities.Task;
 import com.personal.taskie.business.entities.User;
-import com.personal.taskie.business.types.TodoStatus;
+import com.personal.taskie.business.types.TaskStatus;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.InjectMocks;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -30,17 +29,17 @@ class TaskActionsTest {
     private UserRepository userRepository;
     @MockitoBean
     private TaskRepository taskRepository;
-    @Autowired
+    @InjectMocks
     private TaskActions taskActions;
 
     @Test
     void shouldCreateTaskSuccessfully() {
         // Arrange
         int userId = 1;
-        User user = new User("John", "john@gmail.com", "1234");
+        User user = new User();
         Task expectedTask = new Task("Example Task", user);
 
-        CreateTaskParams params = mock(CreateTaskParams.class);
+        CreateTaskInput params = mock(CreateTaskInput.class);
 
         when(params.userId()).thenReturn(userId);
         when(params.createTask(user)).thenReturn(expectedTask);
@@ -61,7 +60,7 @@ class TaskActionsTest {
     void createTaskShouldThrowExceptionWhenUserNotFound() {
         // Arrange
         int userId = 1;
-        CreateTaskParams params = mock(CreateTaskParams.class);
+        CreateTaskInput params = mock(CreateTaskInput.class);
 
         when(params.userId()).thenReturn(userId);
         when(userRepository.findById(userId)).thenReturn(Optional.empty());
@@ -75,30 +74,33 @@ class TaskActionsTest {
     void shouldUpdateTaskSuccessfully() {
         // arrange
         int taskId = 1;
-        String expectedTaskTitle = "tarefa actualizada";
 
         User user = new User();
-        Task existingTask = new Task(taskId, "tarefa existente", TodoStatus.PENDING, user);
-        Task expectedTask = new Task(taskId, expectedTaskTitle, TodoStatus.COMPLETED, user);
+        Task existingTask = new Task(taskId, "tarefa existente", TaskStatus.PENDING, user);
+        Task expectedTask = new Task(taskId, "tarefa actualizada", TaskStatus.COMPLETED, user);
+
+        var params = mock(UpdateTaskInput.class);
+
+        when(params.id()).thenReturn(taskId);
+        when(params.createTask(user)).thenReturn(expectedTask);
 
         when(taskRepository.findById(taskId)).thenReturn(Optional.of(existingTask));
-        when(taskRepository.save(any(Task.class))).thenReturn(expectedTask);
+        when(taskRepository.save(expectedTask)).thenReturn(expectedTask);
 
         // act
-        var params =  new UpdateTaskParams(taskId, expectedTaskTitle, TodoStatus.COMPLETED);
         Task updatedTask = taskActions.update(params);
 
         // assert
         assertEquals(expectedTask, updatedTask);
         verify(taskRepository).findById(taskId);
-        verify(taskRepository).save(any(Task.class));
+        verify(taskRepository).save(expectedTask);
     }
 
     @Test
     void updateTaskShouldThrowExceptionWhenTaskNotFound() {
         // assert
         int taskId = 1;
-        var params = mock(UpdateTaskParams.class);
+        var params = mock(UpdateTaskInput.class);
         when(params.id()).thenReturn(taskId);
         when(taskRepository.findById(taskId)).thenReturn(Optional.empty());
 
@@ -152,7 +154,7 @@ class TaskActionsTest {
     }
 
     @Test
-    void readByIdShoudThrowExceptionWenTaskNotFound() {
+    void readByIdShouldThrowExceptionWenTaskNotFound() {
         int taskId = 1;
         when(taskRepository.findById(taskId)).thenReturn(Optional.empty());
         assertThrows(EntityNotFoundException.class, () -> taskActions.readById(taskId));

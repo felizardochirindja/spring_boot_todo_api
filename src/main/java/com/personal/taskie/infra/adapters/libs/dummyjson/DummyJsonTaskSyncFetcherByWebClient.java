@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Component
-public final class DummyJsonTaskSyncFetcher implements RemoteTaskSyncFetcher {
+public final class DummyJsonTaskSyncFetcherByWebClient implements RemoteTaskSyncFetcher {
     private final WebClient webClient = WebClient.create("https://dummyjson.com");
 
     public RemoteTasksResponse fetchTasksByUserId(Integer userId) {

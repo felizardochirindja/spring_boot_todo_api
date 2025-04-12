@@ -6,7 +6,7 @@ import com.personal.taskie.business.types.TaskStatus;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public record UpdateTaskParams(
+public record UpdateTaskInput(
         int id,
         @NotNull
         @NotBlank

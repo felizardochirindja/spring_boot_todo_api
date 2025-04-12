@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 
 @Component
-public final class JwtGeneratorAdapter implements TokenGenerator {
+public final class JwtGenerator implements TokenGenerator {
     @Value("${security.jwt.secret-key}")
     private String secret;
 

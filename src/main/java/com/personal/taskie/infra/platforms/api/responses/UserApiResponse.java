@@ -10,6 +10,6 @@ public record UserApiResponse(
         String message,
         @NotNull
         @Valid
-        UserResponse user
+        UserApi user
 ) {
 }

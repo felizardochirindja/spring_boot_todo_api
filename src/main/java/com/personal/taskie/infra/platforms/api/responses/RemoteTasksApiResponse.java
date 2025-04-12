@@ -1,14 +1,15 @@
 package com.personal.taskie.infra.platforms.api.responses;
 
-import com.personal.taskie.infra.adapters.libs.dummyjson.RemoteTask;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
-public record RemoteTaskApiResponse(
-        List<RemoteTask> todos,
+public record RemoteTasksApiResponse(
+        List<RemoteTaskApi> tasks,
         int total,
         int skip,
         int limit,
-        UserResponse user
+        @Valid
+        UserApi user
 ) {
 }
