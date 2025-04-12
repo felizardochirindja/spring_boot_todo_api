@@ -1,6 +1,7 @@
 package com.personal.taskie.business.app.actions;
 
 import com.personal.taskie.adapters.repos.UserRepository;
+import com.personal.taskie.business.app.ports.input.UserCreator;
 import com.personal.taskie.business.entities.exceptions.EntityNotFoundException;
 import com.personal.taskie.business.app.params.CreateUserInput;
 import com.personal.taskie.business.entities.User;
@@ -13,7 +14,7 @@ public final class UserActions {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private CreateUserAction createUserAction;
+    private UserCreator createUserAction;
 
     public User create(CreateUserInput params) {
         return createUserAction.execute(params);
