@@ -29,12 +29,7 @@ public final class AuthActions {
 
     public User signUp(SignupInput params) {
         String passwordHash = passwordEncoder.encode(params.password());
-
-        return createUserAction.execute(new CreateUserInput(
-                params.name(),
-                params.email(),
-                passwordHash
-        ));
+        return createUserAction.execute(params.createUserInput(passwordHash));
     }
 
     public String login(String email, String password) {
