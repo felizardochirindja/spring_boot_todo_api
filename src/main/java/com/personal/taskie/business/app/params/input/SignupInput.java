@@ -14,4 +14,7 @@ public record SignupInput(
         @NotBlank
         String password
 ) {
+        public CreateUserInput createUserInput(String passwordHash) {
+                return new CreateUserInput(name(), email(), passwordHash);
+        }
 }
