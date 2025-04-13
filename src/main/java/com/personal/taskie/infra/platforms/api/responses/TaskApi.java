@@ -2,7 +2,6 @@ package com.personal.taskie.infra.platforms.api.responses;
 
 import com.personal.taskie.business.entities.Task;
 import com.personal.taskie.business.types.TaskStatus;
-import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

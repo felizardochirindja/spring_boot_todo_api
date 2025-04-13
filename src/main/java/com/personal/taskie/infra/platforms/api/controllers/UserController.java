@@ -1,10 +1,8 @@
 package com.personal.taskie.infra.platforms.api.controllers;
 
-import com.personal.taskie.adapters.repos.UserRepository;
 import com.personal.taskie.business.app.params.output.ReadRemoteTasksOutput;
 import com.personal.taskie.business.app.actions.TaskActions;
 import com.personal.taskie.business.app.actions.UserActions;
-import com.personal.taskie.business.app.ports.output.remotetask.RemoteTaskSyncFetcher;
 import com.personal.taskie.business.entities.Task;
 import com.personal.taskie.business.entities.User;
 import com.personal.taskie.infra.platforms.api.responses.RemoteTaskApi;
@@ -26,10 +24,6 @@ public final class UserController {
     private UserActions userActions;
     @Autowired
     private TaskActions taskActions;
-    @Autowired
-    private RemoteTaskSyncFetcher remoteTaskSyncFetcher;
-    @Autowired
-    private UserRepository userRepository;
 
     @GetMapping("/{id}")
     public ResponseEntity<UserApiResponse> readById(@PathVariable Integer id) {
