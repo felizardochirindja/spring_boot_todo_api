@@ -10,6 +10,9 @@ import com.personal.taskie.business.app.ports.output.remotetask.RemoteTaskSyncFe
 import com.personal.taskie.business.entities.Task;
 import com.personal.taskie.business.entities.User;
 import com.personal.taskie.business.app.ports.output.remotetask.RemoteTasksResponse;
+
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,14 +26,32 @@ public final class TaskActions {
     private UserRepository userRepository;
     @Autowired
     private RemoteTaskSyncFetcher remoteTaskSyncFetcher;
+    private final static Logger logger = LoggerFactory.getLogger(TaskActions.class.getName());
 
     public Task create(CreateTaskInput params) {
+        logger.atInfo()
+                .setMessage("Creating task!")
+                .addKeyValue("userId", params.userId())
+                .log();
+
         User user = userRepository.findById(params.userId())
-                .orElseThrow(() -> new EntityNotFoundException("user not found"));
+                .orElseThrow(() -> {
+                    logger.atError()
+                            .setMessage("User not found!")
+                            .addKeyValue("userId", params.userId())
+                            .log();
 
-        Task task = params.createTask(user);
+                    return new EntityNotFoundException("user not found");
+                });
 
-        return taskRepository.save(task);
+        Task createdTask = taskRepository.save(params.createTask(user));
+        logger.atInfo()
+                .setMessage("Task created!")
+                .addKeyValue("taskId", createdTask.getId())
+                .addKeyValue("userId", createdTask.getUser().getId())
+                .log();
+            
+        return createdTask;
     }
 
     public Task readById(int id) {
