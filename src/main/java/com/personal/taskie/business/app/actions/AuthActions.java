@@ -48,6 +48,11 @@ public final class AuthActions {
     }
 
     public String login(String email, String password) {
+        logger.atInfo()
+                .setMessage("Login attempt!")
+                .addKeyValue("email", email)
+                .log();
+
         var authManager = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         email,
@@ -58,7 +63,19 @@ public final class AuthActions {
         String token = tokenGenerator.generateToken((AuthUser) authManager.getPrincipal());
 
         userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+                .orElseThrow(() -> {
+                    logger.atWarn()
+                            .setMessage("User not found after authentication!")
+                            .addKeyValue("email", email)
+                            .log();
+
+                    return new UsernameNotFoundException("User not found!");
+                });
+
+        logger.atInfo()
+                .setMessage("Login successful!")
+                .addKeyValue("email", email)
+                .log();
 
         return token;
     }
