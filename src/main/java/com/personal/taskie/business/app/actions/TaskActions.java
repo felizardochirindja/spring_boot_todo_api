@@ -131,7 +131,7 @@ public final class TaskActions {
                 });
 
         Task task = taskRepository.save(params.createTask(existingTask.getUser()));
-        
+
         logger.atInfo()
                 .setMessage("Task updated!")
                 .addKeyValue("taskId", task.getId())
@@ -142,10 +142,28 @@ public final class TaskActions {
     }
 
     public ReadRemoteTasksOutput readRemoteTasksByUserId(int userId) {
+        logger.atInfo()
+                .setMessage("Reading remote tasks by user id!")
+                .addKeyValue("userId", userId)
+                .log();
+
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("user not found"));
+                .orElseThrow(() -> {
+                    logger.atError()
+                            .setMessage("User not found!")
+                            .addKeyValue("userId", userId)
+                            .log();
+
+                    return new EntityNotFoundException("user not found");
+                });
 
         RemoteTasksResponse response = remoteTaskSyncFetcher.fetchTasksByUserId(userId);
+
+        logger.atInfo()
+                .setMessage("Remote tasks read!")
+                .addKeyValue("userId", userId)
+                .addKeyValue("taskCount", response.todos().size())
+                .log();
 
         return new ReadRemoteTasksOutput(
                 response.todos(),
