@@ -17,7 +17,7 @@ public final class CreateUserAction implements UserCreator {
 
     public User execute(CreateUserInput params) {
         logger.atInfo()
-                .setMessage("Trying to create user")
+                .setMessage("Trying to create user!")
                 .addKeyValue("email", params.email())
                 .log();
 
@@ -33,7 +33,7 @@ public final class CreateUserAction implements UserCreator {
         User createdUser = userRepository.save(params.createUser());
 
         logger.atInfo()
-                .setMessage("User created successfully")
+                .setMessage("User created successfully!")
                 .addKeyValue("userId", createdUser.getId())
                 .addKeyValue("email", createdUser.getEmail())
                 .log();
