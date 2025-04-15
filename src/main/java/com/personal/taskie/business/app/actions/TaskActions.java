@@ -88,10 +88,30 @@ public final class TaskActions {
     }
 
     public List<Task> readAllByUserId(int userId) {
-        userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("user not found"));
+        logger.atInfo()
+                .setMessage("Reading all tasks by user id!")
+                .addKeyValue("userId", userId)
+                .log();
 
-        return taskRepository.findAllByUserId(userId);
+        userRepository.findById(userId)
+                .orElseThrow(() -> {
+                    logger.atError()
+                            .setMessage("User not found!")
+                            .addKeyValue("userId", userId)
+                            .log();
+
+                    return new EntityNotFoundException("user not found");
+                });
+
+        List<Task> task = taskRepository.findAllByUserId(userId);
+
+        logger.atInfo()
+                .setMessage("Tasks read!")
+                .addKeyValue("userId", userId)
+                .addKeyValue("taskCount", task.size())
+                .log();
+
+        return task;
     }
 
     public Task update(UpdateTaskInput params) {
