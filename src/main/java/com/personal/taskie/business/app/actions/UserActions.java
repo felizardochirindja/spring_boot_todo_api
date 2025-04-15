@@ -14,6 +14,8 @@ public final class UserActions {
 
     public User readById(int id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("user not found"));
+                .orElseThrow(() -> {
+                    return new EntityNotFoundException("user not found");
+                });
     }
 }
