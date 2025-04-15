@@ -6,6 +6,8 @@ import com.personal.taskie.business.app.ports.input.UserCreator;
 import com.personal.taskie.business.app.ports.output.TokenGenerator;
 import com.personal.taskie.business.entities.AuthUser;
 import com.personal.taskie.business.entities.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,10 +27,24 @@ public final class AuthActions {
     private TokenGenerator tokenGenerator;
     @Autowired
     private UserRepository userRepository;
+    private static final Logger logger = LoggerFactory.getLogger(AuthActions.class);
 
     public User signUp(SignupInput params) {
+        logger.atInfo()
+                .setMessage("Signing up user!")
+                .addKeyValue("email", params.email())
+                .log();
+
         String passwordHash = passwordEncoder.encode(params.password());
-        return createUserAction.execute(params.createUserInput(passwordHash));
+        User createdUser = createUserAction.execute(params.createUserInput(passwordHash));
+
+        logger.atInfo()
+                .setMessage("Sign up completed!")
+                .addKeyValue("userId", createdUser.getId())
+                .addKeyValue("email", createdUser.getEmail())
+                .log();
+
+        return createdUser;
     }
 
     public String login(String email, String password) {
