@@ -115,12 +115,30 @@ public final class TaskActions {
     }
 
     public Task update(UpdateTaskInput params) {
+        logger.atInfo()
+                .setMessage("Updating task!")
+                .addKeyValue("taskId", params.id())
+                .log();
+
         Task existingTask = taskRepository.findById(params.id())
-                .orElseThrow(() -> new EntityNotFoundException("todo not found"));
+                .orElseThrow(() -> {
+                    logger.atError()
+                            .setMessage("task not found!")
+                            .addKeyValue("taskId", params.id())
+                            .log();
 
-        Task task = params.createTask(existingTask.getUser());
+                    return new EntityNotFoundException("todo not found");
+                });
 
-        return taskRepository.save(task);
+        Task task = taskRepository.save(params.createTask(existingTask.getUser()));
+        
+        logger.atInfo()
+                .setMessage("Task updated!")
+                .addKeyValue("taskId", task.getId())
+                .addKeyValue("userId", task.getUser().getId())
+                .log();
+
+        return task;
     }
 
     public ReadRemoteTasksOutput readRemoteTasksByUserId(int userId) {
