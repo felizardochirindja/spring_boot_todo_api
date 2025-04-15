@@ -55,10 +55,36 @@ public final class TaskActions {
     }
 
     public Task readById(int id) {
-        if (id < 1) throw new RuntimeException("id could not be null");
+        logger.atInfo()
+                .setMessage("Reading task!")
+                .addKeyValue("taskId", id)
+                .log();
 
-        return taskRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("task not found!"));
+        if (id < 1) {
+            logger.atError()
+                    .setMessage("task id could not be null!")
+                    .log();
+
+            throw new RuntimeException("task id could not be null");
+        }
+
+        Task task = taskRepository.findById(id)
+                .orElseThrow(() -> {
+                    logger.atError()
+                            .setMessage("task not found!")
+                            .addKeyValue("taskId", id)
+                            .log();
+
+                    return new EntityNotFoundException("task not found!");
+                });
+
+        logger.atInfo()
+                .setMessage("Task read!")
+                .addKeyValue("taskId", task.getId())
+                .addKeyValue("userId", task.getUser().getId())
+                .log();
+
+        return task;
     }
 
     public List<Task> readAllByUserId(int userId) {
