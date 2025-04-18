@@ -1,5 +1,6 @@
 package com.personal.task.business.app.params.input;
 
+import com.personal.task.business.entities.Role;
 import com.personal.task.business.entities.User;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -13,9 +14,11 @@ public record CreateUserInput(
         String email,
         @NotNull
         @NotBlank
-        String password
+        String password,
+        @NotNull
+        Role.Values role
 ) {
-    public User createUser() {
-        return new User(name, email, password);
+    public User createUser(Role role) {
+        return new User(name, email, password, role);
     }
 }
