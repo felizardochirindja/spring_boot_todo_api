@@ -15,8 +15,8 @@ public final class Role {
     private String name;
     private String description;
 
-    public Role(String name, String description) {
-        this.name = name;
+    public Role(Values name, String description) {
+        this.name = name.name();
         this.description = description;
     }
 
