@@ -50,7 +50,7 @@ class AuthActionsTest {
         SignupInput signupInput = new SignupInput(name, email, rawPassword, Role.Values.ADMIN);
         CreateUserInput createUserInput = signupInput.createUserInput(hashedPassword);
 
-        Role role = new Role("ADMIN", "administrator");
+        Role role = new Role(Role.Values.ADMIN, "administrator");
         User expectedUser = new User(name, email, hashedPassword, role);
 
         Mockito.when(passwordEncoder.encode(rawPassword)).thenReturn(hashedPassword);
