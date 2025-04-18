@@ -1,3 +1,7 @@
+SET FOREIGN_KEY_CHECKS=0;
+drop table if exists roles;
+SET FOREIGN_KEY_CHECKS=1;
+
 create table roles(
     id int not null auto_increment,
     name varchar(255) not null,

@@ -1,3 +1,7 @@
+SET FOREIGN_KEY_CHECKS=0;
+drop table if exists tasks;
+SET FOREIGN_KEY_CHECKS=1;
+
 create table if not exists tasks(
     id int not null auto_increment,
     title varchar(255) not null,
