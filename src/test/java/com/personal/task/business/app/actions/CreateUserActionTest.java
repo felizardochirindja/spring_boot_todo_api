@@ -33,7 +33,7 @@ class CreateUserActionTest {
 
         var params = mock(CreateUserInput.class);
 
-        Role role = new Role("ADMIN", "administrator");
+        Role role = new Role(Role.Values.ADMIN, "administrator");
         User expectedUser = new User("felix", "felix@gmail.com", "1234", role);
 
         when(params.email()).thenReturn(userEmail);
