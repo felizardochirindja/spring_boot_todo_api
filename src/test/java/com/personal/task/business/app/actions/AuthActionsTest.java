@@ -5,6 +5,7 @@ import com.personal.task.business.app.params.input.CreateUserInput;
 import com.personal.task.business.app.params.input.SignupInput;
 import com.personal.task.business.app.ports.output.TokenGenerator;
 import com.personal.task.business.entities.AuthUser;
+import com.personal.task.business.entities.Role;
 import com.personal.task.business.entities.User;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -46,10 +47,11 @@ class AuthActionsTest {
         String rawPassword = "1234";
         String hashedPassword = "hashed_1234";
 
-        SignupInput signupInput = new SignupInput(name, email, rawPassword);
+        SignupInput signupInput = new SignupInput(name, email, rawPassword, Role.Values.ADMIN);
         CreateUserInput createUserInput = signupInput.createUserInput(hashedPassword);
 
-        User expectedUser = new User(name, email, hashedPassword);
+        Role role = new Role("ADMIN", "administrator");
+        User expectedUser = new User(name, email, hashedPassword, role);
 
         Mockito.when(passwordEncoder.encode(rawPassword)).thenReturn(hashedPassword);
         Mockito.when(createUserAction.execute(createUserInput)).thenReturn(expectedUser);
