@@ -30,4 +30,12 @@ public final class Task {
         this.status = status;
         this.user = user;
     }
+
+    public void complete() {
+        if (status == TaskStatus.COMPLETED) {
+            return;
+        }
+
+        status = TaskStatus.COMPLETED;
+    }
 }
