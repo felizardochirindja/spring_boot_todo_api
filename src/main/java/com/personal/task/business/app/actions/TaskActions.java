@@ -14,12 +14,14 @@ import com.personal.task.business.app.ports.output.remotetask.RemoteTasksRespons
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public final class TaskActions {
+public class TaskActions {
     @Autowired
     private TaskRepository taskRepository;
     @Autowired
@@ -28,6 +30,7 @@ public final class TaskActions {
     private RemoteTaskSyncFetcher remoteTaskSyncFetcher;
     private final static Logger logger = LoggerFactory.getLogger(TaskActions.class.getName());
 
+    @CacheEvict(value = "tasks", key = "#params.userId()")
     public Task create(CreateTaskInput params) {
         logger.atInfo()
                 .setMessage("Creating task!")
@@ -87,6 +90,7 @@ public final class TaskActions {
         return task;
     }
 
+    @Cacheable(value = "tasks", key = "#userId", unless = "#result.isEmpty()")
     public List<Task> readAllByUserId(int userId) {
         logger.atInfo()
                 .setMessage("Reading all tasks by user id!")
@@ -114,6 +118,7 @@ public final class TaskActions {
         return task;
     }
 
+    @CacheEvict(value = "tasks", key = "#result.getUser().getId()")
     public Task update(UpdateTaskInput params) {
         logger.atInfo()
                 .setMessage("Updating task!")
