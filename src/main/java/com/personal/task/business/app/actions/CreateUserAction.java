@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public final class CreateUserAction implements UserCreator {
+public class CreateUserAction implements UserCreator {
     @Autowired
     private UserRepository userRepository;
     @Autowired
