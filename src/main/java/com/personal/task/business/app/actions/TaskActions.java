@@ -18,6 +18,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -32,6 +33,7 @@ public class TaskActions {
     private final static Logger logger = LoggerFactory.getLogger(TaskActions.class.getName());
 
     @CacheEvict(value = "tasks", key = "#params.userId()")
+    @Transactional
     public Task create(CreateTaskInput params) {
         logger.atInfo()
                 .setMessage("Creating task!")
