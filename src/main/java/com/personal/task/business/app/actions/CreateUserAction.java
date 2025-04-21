@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public final class CreateUserAction implements UserCreator {
@@ -20,6 +21,7 @@ public final class CreateUserAction implements UserCreator {
     private RoleRepository roleRepository;
     private static final Logger logger = LoggerFactory.getLogger(CreateUserAction.class);
 
+    @Transactional
     public User execute(CreateUserInput params) {
         logger.atInfo()
                 .setMessage("Trying to create user!")
