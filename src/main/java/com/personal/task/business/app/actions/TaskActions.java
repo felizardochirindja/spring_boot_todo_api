@@ -95,6 +95,7 @@ public class TaskActions {
     }
 
     @Cacheable(value = "tasks", key = "#userId", unless = "#result.isEmpty()")
+    @Transactional
     public List<Task> readAllByUserId(int userId) {
         logger.atInfo()
                 .setMessage("Reading all tasks by user id!")
@@ -124,6 +125,7 @@ public class TaskActions {
 
     @CacheEvict(value = "tasks", key = "#result.getUser().getId()")
     @CachePut(value = "task", key = "#params.id()")
+    @Transactional
     public Task update(UpdateTaskInput params) {
         logger.atInfo()
                 .setMessage("Updating task!")
