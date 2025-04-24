@@ -37,7 +37,7 @@ public class KafkaConfig {
     }
 
     @Bean
-    public NewTopic todoEventsTopic() {
+    public NewTopic taskEventsTopic() {
         return new NewTopic(taskEventsTopic, 2, (short) 1);
     }
 
