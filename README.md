@@ -114,7 +114,7 @@ Com os serviços externos no ar, agora você pode iniciar a aplicação com o Ma
 ### 7. Acessar a API
 
 Com tudo no ar, a API estará disponível em:
-![http://localhost:8080]
+[http://localhost:8080]
 
 
 ## Sobre Mim
@@ -124,12 +124,12 @@ Desenvolvedor de software
 
 ## Contactos
 
-(GitHub)[https://github.com/felizardochirindja]
-(LinkedIn)[https://www.linkedin.com/in/felizardo-chirindja-7190b2212]
-(Email)[felizardo.chirindja@gmail.com]
+- (GitHub)[https://github.com/felizardochirindja]
+- (LinkedIn)[https://www.linkedin.com/in/felizardo-chirindja-7190b2212]
+- (Email)[felizardo.chirindja@gmail.com]
 
 ## Projetos que podem te interessar
 
-* biblioteca desenvolvida em php para validar seus dados de forma simples
-(radar_php_lib)[https://packagist.org/packages/felizardochirindja/radar]
+- biblioteca desenvolvida em php para validar seus dados de forma simples
+(radar)[https://packagist.org/packages/felizardochirindja/radar]
  
