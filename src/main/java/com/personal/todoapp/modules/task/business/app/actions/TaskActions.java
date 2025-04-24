@@ -13,6 +13,8 @@ import com.personal.todoapp.modules.task.business.app.ports.output.remotetask.Re
 
 import com.personal.todoapp.modules.events.handlers.EventPublisher;
 import com.personal.todoapp.modules.task.events.TaskEventMessage;
+import com.personal.todoapp.modules.task.events.TaskEventName;
+
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +62,7 @@ public class TaskActions {
 
         Task createdTask = taskRepository.save(params.createTask(user));
 
-        TaskEventMessage taskCreatedEvent = TaskEventMessage.fromTodo(createdTask, "task created");
+        TaskEventMessage taskCreatedEvent = TaskEventMessage.fromTodo(createdTask, TaskEventName.TASK_CREATED);
         eventPublisher.publish(taskEventsTopic, taskCreatedEvent);
 
         logger.atInfo()

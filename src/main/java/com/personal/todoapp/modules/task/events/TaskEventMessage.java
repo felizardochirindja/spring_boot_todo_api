@@ -18,7 +18,7 @@ public final class TaskEventMessage extends EventMessage {
         this.title = title;
     }
 
-    public static TaskEventMessage fromTodo(Task task, String name) {
-        return new TaskEventMessage(name, task.getId(), task.getTitle(), LocalDateTime.now());
+    public static TaskEventMessage fromTodo(Task task, TaskEventName eventName) {
+        return new TaskEventMessage(eventName.name(), task.getId(), task.getTitle(), LocalDateTime.now());
     }
 }
