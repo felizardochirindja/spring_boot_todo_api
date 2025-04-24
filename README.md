@@ -123,12 +123,12 @@ Desenvolvedor de software
 
 ## Contactos
 
-- (GitHub)[https://github.com/felizardochirindja]
-- (LinkedIn)[https://www.linkedin.com/in/felizardo-chirindja-7190b2212]
-- (Email)[felizardo.chirindja@gmail.com]
+- GitHub: [https://github.com/felizardochirindja]
+- LinkedIn: [https://www.linkedin.com/in/felizardo-chirindja-7190b2212]
+- Email: [felizardo.chirindja@gmail.com]
 
 ## Projetos que podem te interessar
 
-- biblioteca desenvolvida em php para validar seus dados de forma simples
-[https://packagist.org/packages/felizardochirindja/radar]
+- biblioteca desenvolvida em php que ajuda a validar dados de forma simples
+radar_php_lib: [https://packagist.org/packages/felizardochirindja/radar]
  
