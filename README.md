@@ -23,9 +23,8 @@ Este projeto consiste em uma API REST desenvolvida com Java/Spring Boot, utiliza
 - ✅ Gerenciamento de dependências com Maven
 - ✅ Versionamento com Git e hospedagem no GitHub
 
-###
 
-### Sobre o Projeto/Motivação
+## Sobre o Projeto/Motivação
 
 Este projeto consiste numa aplicação de lista de tarefas. Uma proposta bem simples, mas intencionalmente construida de forma complexa. A escolha de um domínio pequeno e conhecido foi proposital, pois me permitiu focar na arquitetura, nos padrões de projeto, na integração de ferramentas e na flexibilidade do desenvolvimento, algo que seria dificil se tivesse que aplicar em um dominio compexo. No entando, concentrei meus esforços em experimentar, aprender e aplicar conceitos avançados do ecossistema Java e Spring Boot, de modo a implementar um sistema modular, testável e escalável, mesmo sendo um simples To-Do List.
 
@@ -35,7 +34,7 @@ Este projeto consiste numa aplicação de lista de tarefas. Uma proposta bem sim
 A aplicação também se comunica com uma API externa(Fake API) como parte do processo de demonstração de integração de serviços. Após o login, o usuário pode acessar um endpoint que busca tarefas remotas, filtradas de acordo com o seu próprio ID.
 
 
-* Essa funcionalidade inclui implementacaoes como:
+#### Essa funcionalidade inclui implementacaoes como:
 - Integração com APIs externas usando WebClient;
 - Consumo e transformação de dados JSON de serviços terceiros;
 - Boas práticas de isolamento e desacoplamento da lógica externa.
@@ -131,5 +130,5 @@ Desenvolvedor de software
 ## Projetos que podem te interessar
 
 - biblioteca desenvolvida em php para validar seus dados de forma simples
-(radar)[https://packagist.org/packages/felizardochirindja/radar]
+[https://packagist.org/packages/felizardochirindja/radar]
  
