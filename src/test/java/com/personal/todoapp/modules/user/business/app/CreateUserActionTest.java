@@ -1,12 +1,11 @@
-package com.personal.todoapp.business.app.actions;
+package com.personal.todoapp.modules.user.business.app;
 
+import com.personal.todoapp.modules.shared.exceptions.EntityNotFoundException;
 import com.personal.todoapp.modules.user.adapters.repositories.RoleRepository;
 import com.personal.todoapp.modules.user.adapters.repositories.UserRepository;
 import com.personal.todoapp.modules.user.business.app.params.input.CreateUserInput;
-import com.personal.todoapp.modules.user.business.app.CreateUserAction;
 import com.personal.todoapp.modules.user.business.entities.Role;
 import com.personal.todoapp.modules.user.business.entities.User;
-import com.personal.todoapp.modules.shared.exceptions.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,6 +15,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
 
 @SpringBootTest
 class CreateUserActionTest {

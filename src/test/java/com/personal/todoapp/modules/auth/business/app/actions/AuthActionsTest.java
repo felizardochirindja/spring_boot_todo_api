@@ -1,13 +1,12 @@
-package com.personal.todoapp.business.app.actions;
+package com.personal.todoapp.modules.auth.business.app.actions;
 
-import com.personal.todoapp.modules.user.adapters.repositories.UserRepository;
-import com.personal.todoapp.modules.user.business.app.params.input.CreateUserInput;
 import com.personal.todoapp.modules.auth.business.app.actions.params.input.SignupInput;
 import com.personal.todoapp.modules.auth.business.app.actions.ports.output.TokenGenerator;
 import com.personal.todoapp.modules.auth.business.entities.AuthUser;
-import com.personal.todoapp.modules.auth.business.app.actions.AuthActions;
+import com.personal.todoapp.modules.user.adapters.repositories.UserRepository;
 import com.personal.todoapp.modules.user.business.app.CreateUserAction;
 import com.personal.todoapp.modules.user.business.app.UserActions;
+import com.personal.todoapp.modules.user.business.app.params.input.CreateUserInput;
 import com.personal.todoapp.modules.user.business.entities.Role;
 import com.personal.todoapp.modules.user.business.entities.User;
 import org.junit.jupiter.api.Test;

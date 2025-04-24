@@ -1,40 +1,46 @@
-package com.personal.todoapp.business.app.actions;
+package com.personal.todoapp.modules.task.business.app.actions;
 
-import com.personal.todoapp.modules.task.adapters.repositories.TaskRepository;
-import com.personal.todoapp.modules.user.adapters.repositories.UserRepository;
+import com.personal.todoapp.modules.events.handlers.EventPublisher;
 import com.personal.todoapp.modules.shared.exceptions.EntityNotFoundException;
+import com.personal.todoapp.modules.task.adapters.repositories.TaskRepository;
 import com.personal.todoapp.modules.task.business.app.params.input.CreateTaskInput;
 import com.personal.todoapp.modules.task.business.app.params.input.UpdateTaskInput;
 import com.personal.todoapp.modules.task.business.entities.Task;
-import com.personal.todoapp.modules.task.business.app.actions.TaskActions;
-import com.personal.todoapp.modules.user.business.entities.User;
 import com.personal.todoapp.modules.task.business.types.TaskStatus;
-
+import com.personal.todoapp.modules.task.events.TaskEventMessage;
+import com.personal.todoapp.modules.task.events.TaskEventName;
+import com.personal.todoapp.modules.user.adapters.repositories.UserRepository;
+import com.personal.todoapp.modules.user.business.entities.User;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+
 @SpringBootTest
+@TestPropertySource(properties = "app.topics.task_events=task_events")
 class TaskActionsTest {
     @MockitoBean
     private UserRepository userRepository;
     @MockitoBean
     private TaskRepository taskRepository;
+    @MockitoBean
+    private EventPublisher eventPublisher;
+    @Value("${app.topics.task_events}")
+    private String taskEventsTopicName;
     @InjectMocks
     private TaskActions taskActions;
 
     @Test
-    void shouldCreateTaskSuccessfully() {
+    void shouldCreateTaskSuccessfully() throws NoSuchFieldException, IllegalAccessException {
         // Arrange
         int userId = 1;
         User user = new User();
@@ -48,6 +54,13 @@ class TaskActionsTest {
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
         when(taskRepository.save(expectedTask)).thenReturn(expectedTask);
 
+        java.lang.reflect.Field taskEventsTopicField = TaskActions.class.getDeclaredField("taskEventsTopic");
+        taskEventsTopicField.setAccessible(true);
+        taskEventsTopicField.set(taskActions, taskEventsTopicName);
+
+        TaskEventMessage event = TaskEventMessage.fromTodo(expectedTask, TaskEventName.TASK_CREATED);
+        doNothing().when(eventPublisher).publish(taskEventsTopicName, event);
+
         // Act
         Task createdTask = taskActions.create(params);
 
@@ -55,6 +68,7 @@ class TaskActionsTest {
         assertEquals(expectedTask, createdTask);
         verify(userRepository).findById(userId);
         verify(taskRepository).save(expectedTask);
+        verify(eventPublisher).publish(eq(taskEventsTopicName), any(TaskEventMessage.class));
     }
 
     @Test
@@ -133,7 +147,7 @@ class TaskActionsTest {
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(new User()));
         when(taskRepository.findAllByUserId(userId)).thenReturn(expectedTasks);
-        
+
         // act
         var actualTasks = taskActions.readAllByUserId(userId);
 

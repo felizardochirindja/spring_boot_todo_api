@@ -1,9 +1,7 @@
-package com.personal.todoapp.business.app.actions;
+package com.personal.todoapp.modules.user.business.app;
 
-import com.personal.todoapp.modules.user.adapters.repositories.UserRepository;
 import com.personal.todoapp.modules.shared.exceptions.EntityNotFoundException;
-import com.personal.todoapp.modules.user.business.app.CreateUserAction;
-import com.personal.todoapp.modules.user.business.app.UserActions;
+import com.personal.todoapp.modules.user.adapters.repositories.UserRepository;
 import com.personal.todoapp.modules.user.business.entities.User;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -13,7 +11,8 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 class UserActionsTest {
