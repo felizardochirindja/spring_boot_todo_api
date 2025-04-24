@@ -130,5 +130,5 @@ Desenvolvedor de software
 ## Projetos que podem te interessar
 
 - biblioteca desenvolvida em php que ajuda a validar dados de forma simples
-radar_php_lib: [https://packagist.org/packages/felizardochirindja/radar]
+[https://packagist.org/packages/felizardochirindja/radar]
  
