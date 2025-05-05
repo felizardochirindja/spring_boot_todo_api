@@ -1,4 +1,4 @@
-package com.personal.todoapp.modules.task.infra.platforms.api.controllers.requests;
+package com.personal.todoapp.modules.task.infra.platforms.api.controllers.v1.requests;
 
 import com.personal.todoapp.modules.task.business.app.params.input.CreateTaskInput;
 import jakarta.validation.constraints.NotBlank;

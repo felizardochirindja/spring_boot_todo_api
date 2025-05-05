@@ -1,14 +1,14 @@
-package com.personal.todoapp.modules.user.infra.platforms.api.controllers;
+package com.personal.todoapp.modules.user.infra.platforms.api.controllers.v1;
 
 import com.personal.todoapp.modules.task.business.app.params.output.ReadRemoteTasksOutput;
 import com.personal.todoapp.modules.task.business.app.actions.TaskActions;
 import com.personal.todoapp.modules.user.business.app.UserActions;
 import com.personal.todoapp.modules.task.business.entities.Task;
 import com.personal.todoapp.modules.user.business.entities.User;
-import com.personal.todoapp.modules.task.infra.platforms.api.controllers.responses.RemoteTaskApi;
-import com.personal.todoapp.modules.task.infra.platforms.api.controllers.responses.RemoteTasksApiResponse;
-import com.personal.todoapp.modules.user.infra.platforms.api.controllers.responses.UserApiResponse;
-import com.personal.todoapp.modules.user.infra.platforms.api.controllers.responses.UserApi;
+import com.personal.todoapp.modules.task.infra.platforms.api.controllers.v1.responses.RemoteTaskApi;
+import com.personal.todoapp.modules.task.infra.platforms.api.controllers.v1.responses.RemoteTasksApiResponse;
+import com.personal.todoapp.modules.user.infra.platforms.api.controllers.v1.responses.UserApi;
+import com.personal.todoapp.modules.user.infra.platforms.api.controllers.v1.responses.UserApiResponse;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

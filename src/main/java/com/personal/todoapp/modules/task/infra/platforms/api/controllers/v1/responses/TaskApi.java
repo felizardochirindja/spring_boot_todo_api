@@ -1,4 +1,4 @@
-package com.personal.todoapp.modules.task.infra.platforms.api.controllers.responses;
+package com.personal.todoapp.modules.task.infra.platforms.api.controllers.v1.responses;
 
 import com.personal.todoapp.modules.task.business.entities.Task;
 import com.personal.todoapp.modules.task.business.types.TaskStatus;

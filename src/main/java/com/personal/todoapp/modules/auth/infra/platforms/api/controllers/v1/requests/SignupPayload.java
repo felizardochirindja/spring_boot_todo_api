@@ -1,4 +1,4 @@
-package com.personal.todoapp.modules.auth.infra.platforms.api.controllers.requests;
+package com.personal.todoapp.modules.auth.infra.platforms.api.controllers.v1.requests;
 
 import com.personal.todoapp.modules.auth.business.app.actions.params.input.SignupInput;
 import com.personal.todoapp.modules.user.business.entities.Role;

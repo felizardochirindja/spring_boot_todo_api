@@ -1,4 +1,4 @@
-package com.personal.todoapp.modules.user.infra.platforms.api.controllers.responses;
+package com.personal.todoapp.modules.user.infra.platforms.api.controllers.v1.responses;
 
 import com.personal.todoapp.modules.user.business.entities.User;
 import jakarta.validation.constraints.NotNull;

@@ -5,7 +5,7 @@
 Este projeto consiste em uma API REST desenvolvida com Java/Spring Boot, utilizando uma arquitetura orientada em camadas e eventos, com o intuito de aplicar e demostrar os meus conhecimentos tecnicos em algumas technologias envolvidas no desenvolvimento backend, especificamente no ecossistema Java.
 
 
-### Tecnologias e Conceitos Utilizados
+### Tecnologias/Conceitos Utilizados
 
 - ✅ Linguagem Java(POO, lambdas, Optionals, streams...)
 - ✅ Spring Boot(Web, Security, Cache, Dependency Injection, etc...)

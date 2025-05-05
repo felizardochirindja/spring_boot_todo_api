@@ -1,6 +1,6 @@
-package com.personal.todoapp.modules.task.infra.platforms.api.controllers.responses;
+package com.personal.todoapp.modules.task.infra.platforms.api.controllers.v1.responses;
 
-import com.personal.todoapp.modules.user.infra.platforms.api.controllers.responses.UserApi;
+import com.personal.todoapp.modules.user.infra.platforms.api.controllers.v1.responses.UserApi;
 import jakarta.validation.Valid;
 
 import java.util.List;
