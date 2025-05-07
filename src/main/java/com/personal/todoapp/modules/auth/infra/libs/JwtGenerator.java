@@ -18,6 +18,7 @@ public final class JwtGenerator implements TokenGenerator {
     @Value("${security.jwt.secret-key}")
     private String secret;
 
+    @Override
     public String generateToken(AuthUser user) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
