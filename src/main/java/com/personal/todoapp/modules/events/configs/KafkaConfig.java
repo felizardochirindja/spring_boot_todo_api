@@ -1,5 +1,6 @@
 package com.personal.todoapp.modules.events.configs;
 
+import org.springframework.context.annotation.Profile;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 import com.personal.todoapp.modules.events.entities.EventMessaging;
 import com.personal.todoapp.modules.events.partitioners.TimeBasedPartitioner;
@@ -20,9 +21,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
-@ConditionalOnProperty(name = "app.message_broker.name", havingValue = "kafka", matchIfMissing = true)
+@Profile("!test")
+@ConditionalOnProperty(name = "app.message_broker.name", havingValue = "kafka")
 public class KafkaConfig {
-    @Value("${spring.kafka.bootstrap-servers}")
+    @Value("${spring.kafka.bootstrap-servers}") 
     private String bootstrapServers;
 
     @Value("${app.topics.task_events}")
