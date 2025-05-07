@@ -3,7 +3,6 @@ package com.personal.todoapp.modules.task.infra.platforms.api.controllers.v1;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.personal.todoapp.modules.auth.business.app.actions.ports.output.TokenGenerator;
 import com.personal.todoapp.modules.auth.infra.platforms.api.middlewares.TokenAuthFilter;
-import com.personal.todoapp.modules.events.configs.KafkaConfig;
 import com.personal.todoapp.modules.task.business.app.actions.TaskActions;
 import com.personal.todoapp.modules.task.business.app.params.input.CreateTaskInput;
 import com.personal.todoapp.modules.task.business.entities.Task;
