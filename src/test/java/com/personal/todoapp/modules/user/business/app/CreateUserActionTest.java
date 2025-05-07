@@ -9,6 +9,7 @@ import com.personal.todoapp.modules.user.business.entities.User;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.util.Optional;
@@ -18,6 +19,7 @@ import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verify;
 
 @SpringBootTest
+@ActiveProfiles("test")
 class CreateUserActionTest {
     @MockitoBean
     private UserRepository userRepository;
