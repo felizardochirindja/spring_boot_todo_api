@@ -1,5 +1,7 @@
+name: spring_boot_todo_api
+
 services:
-  broker:
+  kafka:
     image: apache/kafka:latest
     hostname: broker
     container_name: kafka_broker
@@ -21,3 +23,48 @@ services:
       KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
       KAFKA_LOG_DIRS: /tmp/kraft-combined-logs
       CLUSTER_ID: MkU3OEVBNTcwNTJENDM2Qk
+    healthcheck:
+      test: [
+        "CMD-SHELL",
+        "/opt/kafka/bin/kafka-topics.sh --create --topic healthcheck --bootstrap-server broker:29092 &&
+        /opt/kafka/bin/kafka-topics.sh --delete --topic healthcheck --bootstrap-server broker:29092 &&
+        exit 0 || exit 1"
+      ]
+      interval: 10s
+      retries: 5
+      start_period: 10s
+
+  mysql:
+    image: mysql:8.4
+    container_name: mysql_84
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: todo_api
+      MYSQL_ALLOW_EMPTY_PASSWORD: no
+    ports:
+      - "3307:3306"
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot" ]
+      interval: 10s
+      retries: 5
+      start_period: 10s
+
+  api:
+    image: spring_boot_todo_api
+    container_name: spring_boot_todo_api
+    build:
+      context: ./
+      dockerfile: dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      MYSQL_URL: jdbc:mysql://mysql_84:3306/todo_api
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      KAFKA_BROKERS: "broker:29092"
+      TZ: UTC
+    depends_on:
+      kafka:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
