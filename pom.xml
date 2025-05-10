@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.personal</groupId>
-	<artifactId>task</artifactId>
+	<artifactId>spring_boot_todo_api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>task</name>
-	<description>Simple task api built in spring boot framework</description>
+	<name>Todo API</name>
+	<description>Simple todo api built in spring boot framework</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -120,6 +120,21 @@
 		</dependency>
 	</dependencies>
 
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<properties>
+				<env>src/main/resources/docker</env>
+			</properties>
+		</profile>
+		<profile>
+			<id>docker</id>
+			<properties>
+				<env>src/main/resources/docker</env>
+			</properties>
+		</profile>
+	</profiles>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -127,7 +142,7 @@
 				<artifactId>flyway-maven-plugin</artifactId>
 				<version>11.7.1</version>
 				<configuration>
-					<url>jdbc:mysql://localhost:3306/todo_api</url>
+					<url>jdbc:mysql://mysql_84:3306/todo_api</url>
 					<user>root</user>
 					<password>root</password>
 				</configuration>
