@@ -34,8 +34,9 @@ services:
       retries: 5
       start_period: 10s
 
-  mysql:
+  database:
     image: mysql:8.4
+    hostname: mysql
     container_name: mysql_84
     environment:
       MYSQL_ROOT_PASSWORD: root
@@ -58,7 +59,7 @@ services:
     ports:
       - "8080:8080"
     environment:
-      MYSQL_URL: jdbc:mysql://mysql_84:3306/todo_api
+      MYSQL_URL: jdbc:mysql://mysql:3306/todo_api
       MYSQL_USER: root
       MYSQL_PASSWORD: root
       KAFKA_BROKERS: "broker:29092"
@@ -66,5 +67,5 @@ services:
     depends_on:
       kafka:
         condition: service_healthy
-      mysql:
+      database:
         condition: service_healthy
