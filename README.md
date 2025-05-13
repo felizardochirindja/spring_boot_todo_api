@@ -60,61 +60,142 @@ Isso permite identificar com facilidade o que está acontecendo em cada camada d
 
 A aplicação conta com uma cobertura de testes unitários, com foco principal nas regras de negócio e nos componentes de serviço. Utilizei ferramentas como JUnit e Mockito para garantir que cada parte da aplicação funcione corretamente de forma isolada, testando diferentes cenários e validando comportamentos esperados, com o objetivo de garantir a confiabilidade, facilidade de manutenção e permitir futuras mudanças no código sem comprometer funcionalidades existentes.
 
-
-## Como Executar a Aplicação
-
-Para rodar este projeto localmente, siga os passos abaixo:
-
-### 1. Clonar o repositório
+Execute os testes unitários da aplicação com o seguinte comando:
 
 ```bash
-git clone https://github.com/seu-usuario/seu-repositorio.git
-cd seu-repositorio
+mvn test
 ```
 
-### 2. Instalar dependências e compilar o projeto
 
-Antes de rodar a aplicação, é necessário instalar as dependências com o Maven:
+## 🚀 Como Executar a Aplicação
+
+---
+
+### ✅ Pré-requisitos
+
+Este projeto pode ser executado **localmente** ou utilizando **Docker**. Para executar localmente, certifique-se de ter instalado:
+
+- [Java 21+](https://adoptium.net/)
+- [Apache Maven 3+](https://maven.apache.org/)
+- [MySQL 8.4+](https://dev.mysql.com/downloads/mysql/)
+- [Apache Kafka](https://kafka.apache.org/) (pode ser iniciado via Docker)
+
+---
+
+## 🔧 Execução Local
+
+### 1 Clonar o repositório
+
 ```bash
-./mvnw clean install
+git clone https://github.com/felizardochirindja/spring_boot_todo_api.git
+cd spring_boot_todo_api
 ```
 
-### 3. Subir os serviços com Docker (Kafka)
+### 2 Instalar dependências e compilar o projeto
 
-A aplicação utiliza o Apache Kafka via Docker Compose. Para iniciar os containers necessários, execute:
+Use o Maven para instalar as dependências:
+
 ```bash
-docker-compose up -d
+mvn clean install
 ```
 
-### 4. Configuração do Banco de Dados
+### 3 Configurar o Apache Kafka
 
-Certifique-se de que o banco MySQL esteja rodando e que o banco de dados esteja criado antes de iniciar a aplicação. em seguida ajusta as credenciais e URL do banco de dados apartir do arquivo: src/main/resources/application-local.properties
+Garanta que o Apache kafka esteja rodando. Em seguida, ajuste as configurações de conexão no arquivo:
+
+📄 `src/main/resources/application-dev.properties`
 
 ```conf
-spring.datasource.url=
-spring.datasource.username=root
-spring.datasource.password=
+spring.kafka.bootstrap-servers=localhost:9092
 ```
 
-### 5. Rodar os testes
+Caso não tenha o Kafka instalado localmente, é possível subi-lo rapidamente usando Docker com o seguinte comando:
 
-Para executar todos os testes unitários da aplicação, você pode usar o seguinte comando Maven:
 ```bash
-./mvnw test
+docker compose up -d --build kafka
 ```
 
-### 6. Rodar a aplicação
+### 4 Configurar o Banco de Dados
 
-Com os serviços externos no ar, agora você pode iniciar a aplicação com o Maven:
+Garanta que o MySQL esteja rodando e que o banco de dados `todo_api` esteja criado. Depois, ajuste as configurações da conexão no arquivo:
+
+📄 `src/main/resources/application-dev.properties`
+
+```conf
+spring.datasource.url=jdbc:mysql://localhost:3306/todo_api
+spring.datasource.username=seu_usuario
+spring.datasource.password=sua_senha
+```
+
+### 6 Verificar o perfil ativo
+
+Certifique-se de que o perfil ativo esteja configurado como `dev` no arquivo:
+
+📄 `src/main/resources/application.properties`
+
+```conf
+spring.profiles.active=dev
+```
+
+### 7 Iniciar a aplicação
+
+Com Kafka e MySQL em execução, você pode iniciar a aplicação com:
+
 ```bash
-./mvnw spring-boot:run
+mvn spring-boot:run
 ```
 
-### 7. Acessar a API
+---
 
-Com tudo no ar, a API estará disponível em:
+## 🐳 Execução com Docker
+
+### 1 Alterar o perfil para `docker`
+
+Antes de executar via Docker, altere o perfil ativo no arquivo:
+
+📄 `src/main/resources/application.properties`
+
+```conf
+spring.profiles.active=docker
+```
+
+> Isso garante que a aplicação usará as URLs e credenciais corretas para o ambiente Docker.
+
+### 2 Compilar o projeto com o Maven. Execute o seguinte comando para gerar o pacote da aplicação:
+
+```bash
+mvn clean package
+```
+
+### 3 Subir todos os serviços com Docker Compose
+
+No diretório raiz do projeto, execute:
+
+```bash
+docker-compose up --build
+```
+
+Esse comando irá:
+
+- Construir a imagem da aplicação (`spring_boot_todo_api`)
+- Subir os containers do **Kafka**, **MySQL** e da **API**
+- Aguardar os serviços estarem saudáveis antes de iniciar a aplicação
+
+---
+
+## 🌐 Acessar a API
+
+Com a aplicação rodando(local ou via Docker), a API estará disponível em:
+
 [http://localhost:8080]
 
+---
+
+## 📖 Documentação da API
+
+Você pode visualizar a documentação interativa da API gerada pelo Swagger acessando o seguinte URL no seu navegador:
+
+[http://localhost:8080/swagger-docs](http://localhost:8080/swagger-docs)
 
 ## Sobre Mim
 
@@ -123,9 +204,9 @@ Desenvolvedor de software
 
 ## Contactos
 
-- GitHub: [https://github.com/felizardochirindja]
-- LinkedIn: [https://www.linkedin.com/in/felizardo-chirindja-7190b2212]
-- Email: [felizardo.chirindja@gmail.com]
+- [GitHub](https://github.com/felizardochirindja)
+- [LinkedIn](https://www.linkedin.com/in/felizardo-chirindja-7190b2212)
+- [Email](felizardo.chirindja@gmail.com)
 
 ## Projetos que podem te interessar
 
