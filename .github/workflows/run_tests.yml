@@ -36,6 +36,5 @@ jobs:
         env:
           MYSQL_URL: jdbc:mysql://localhost:3306/todo_api
           MYSQL_USER: root
-          MYSQL_PASSWORD: root
-          # ACTIVE_PROFILE: test
+          MYSQL_PASSWORD: rootee
         run: mvn test
