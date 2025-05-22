@@ -33,8 +33,8 @@ jobs:
           distribution: 'temurin'
 
       - name: Run tests with Maven
-        env:
-          MYSQL_URL: jdbc:mysql://localhost:3306/todo_api
-          MYSQL_USER: root
-          MYSQL_PASSWORD: root
+        # env:
+        #   MYSQL_URL: jdbc:mysql://localhost:3306/todo_api
+        #   MYSQL_USER: root
+        #   MYSQL_PASSWORD: root
         run: mvn test
