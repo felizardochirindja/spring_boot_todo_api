@@ -39,4 +39,29 @@ public final class UserActions {
 
         return user;
     }
+
+    public User readByEmail(String email) {
+        logger.atInfo()
+                .setMessage("reading user!")
+                .addKeyValue("email", email)
+                .log();
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> {
+                    logger.atWarn()
+                            .setMessage("User not found!")
+                            .addKeyValue("email", email)
+                            .log();
+
+                    return new EntityNotFoundException("user not found");
+                });
+
+        logger.atInfo()
+                .setMessage("user read successfully!")
+                .addKeyValue("userId", user.getId())
+                .addKeyValue("email", user.getEmail())
+                .log();
+
+        return user;
+    }
 }
