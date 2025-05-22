@@ -34,9 +34,7 @@ public class TokenAuthFilter extends OncePerRequestFilter {
         String token = this.extractToken(request);
 
         if (token != null) {
-            System.out.println("token: " + token);
             String email = tokenGenerator.validateToken(token);
-            System.out.println("email: " + email);
             var userDetails = userDetailsService.loadUserByUsername(email);
 
             var authorization = new UsernamePasswordAuthenticationToken(
