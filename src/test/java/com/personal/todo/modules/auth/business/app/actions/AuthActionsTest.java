@@ -1,5 +1,6 @@
 package com.personal.todo.modules.auth.business.app.actions;
 
+import com.personal.todo.TodoApplication;
 import com.personal.todo.modules.auth.business.app.actions.params.input.SignupInput;
 import com.personal.todo.modules.auth.business.app.actions.ports.output.TokenGenerator;
 import com.personal.todo.modules.auth.business.entities.AuthUser;
@@ -25,7 +26,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
+@SpringBootTest(classes = TodoApplication.class)
 @ActiveProfiles("test")
 class AuthActionsTest {
     @MockitoBean

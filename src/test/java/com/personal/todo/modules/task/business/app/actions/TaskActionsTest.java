@@ -1,5 +1,6 @@
 package com.personal.todo.modules.task.business.app.actions;
 
+import com.personal.todo.TodoApplication;
 import com.personal.todo.modules.events.handlers.EventPublisher;
 import com.personal.todo.modules.shared.exceptions.EntityNotFoundException;
 import com.personal.todo.modules.task.adapters.repositories.TaskRepository;
@@ -26,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verify;
 
-@SpringBootTest
+@SpringBootTest(classes = TodoApplication.class)
 @ActiveProfiles("test")
 @TestPropertySource(properties = "app.topics.task_events=task_events")
 class TaskActionsTest {

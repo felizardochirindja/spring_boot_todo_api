@@ -1,5 +1,6 @@
 package com.personal.todo.modules.user.business.app;
 
+import com.personal.todo.TodoApplication;
 import com.personal.todo.modules.shared.exceptions.EntityNotFoundException;
 import com.personal.todo.modules.user.adapters.repositories.RoleRepository;
 import com.personal.todo.modules.user.adapters.repositories.UserRepository;
@@ -18,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verify;
 
-@SpringBootTest
+@SpringBootTest(classes = TodoApplication.class)
 @ActiveProfiles("test")
 class CreateUserActionTest {
     @MockitoBean
