@@ -1,6 +1,7 @@
 package com.personal.todo.modules.events.configs;
 
 import org.springframework.context.annotation.Profile;
+import org.springframework.kafka.core.*;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 import com.personal.todo.modules.events.entities.EventMessaging;
 import com.personal.todo.modules.events.partitioners.TimeBasedPartitioner;
@@ -12,10 +13,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.kafka.core.DefaultKafkaProducerFactory;
-import org.springframework.kafka.core.KafkaAdmin;
-import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.kafka.core.ProducerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
