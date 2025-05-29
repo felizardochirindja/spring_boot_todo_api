@@ -41,7 +41,6 @@ public class TaskActions {
     private String taskEventsTopic;
     private final static Logger logger = LoggerFactory.getLogger(TaskActions.class.getName());
 
-
     @CacheEvict(value = "tasks", key = "#params.userId()")
     @Transactional
     public Task create(CreateTaskInput params) {
@@ -198,5 +197,9 @@ public class TaskActions {
                 response.limit(),
                 user
         );
+    }
+
+    public void persistLog(TaskEventName eventName, Integer TaskId, String taskTitle) {
+
     }
 }
