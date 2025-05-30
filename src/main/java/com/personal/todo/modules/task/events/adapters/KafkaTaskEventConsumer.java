@@ -10,10 +10,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Profile;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
 @Component
+@Profile("!test")
 @ConditionalOnProperty(name = "app.message_broker.name", havingValue = "kafka", matchIfMissing = true)
 public class KafkaTaskEventConsumer implements EventConsumer {
     @Autowired
