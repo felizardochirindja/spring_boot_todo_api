@@ -7,9 +7,9 @@ import com.personal.todo.modules.task.events.TaskEventMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
+@Component
 @ConditionalOnProperty(name = "app.message_broker.name", havingValue = "kafka", matchIfMissing = true)
 public class KafkaTaskEventProducer implements EventPublisher<TaskEventMessage> {
     @Autowired
