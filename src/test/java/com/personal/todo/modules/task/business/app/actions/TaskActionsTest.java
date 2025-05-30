@@ -36,7 +36,7 @@ class TaskActionsTest {
     @MockitoBean
     private TaskRepository taskRepository;
     @MockitoBean
-    private EventPublisher eventPublisher;
+    private EventPublisher<TaskEventMessage> eventPublisher;
     @Value("${app.topics.task_events}")
     private String taskEventsTopicName;
     @InjectMocks

@@ -1,8 +1,11 @@
-package com.personal.todo.modules.task.events;
+package com.personal.todo.modules.task.events.adapters;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.personal.todo.modules.events.handlers.EventConsumer;
 import com.personal.todo.modules.task.business.app.actions.TaskActions;
+import com.personal.todo.modules.task.events.TaskEventMessage;
+import com.personal.todo.modules.task.events.TaskEventName;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,30 +15,28 @@ import org.springframework.stereotype.Component;
 
 @Component
 @ConditionalOnProperty(name = "app.message_broker.name", havingValue = "kafka", matchIfMissing = true)
-public class TaskEventConsumer implements EventConsumer {
+public class KafkaTaskEventConsumer implements EventConsumer {
     @Autowired
     private ObjectMapper objectMapper;
     @Autowired
     private TaskActions taskActions;
-    private static final Logger logger = LoggerFactory.getLogger(TaskEventConsumer.class);
+    private static final Logger logger = LoggerFactory.getLogger(KafkaTaskEventConsumer.class);
 
     @KafkaListener(topics = "task_events", groupId = "task_consumer_group")
     @Override
-    public void consume(String message) {
-        logger.info("Received task event: {}", message);
-
+    public void consume(String event) {
         try {
-            TaskEventMessage event = objectMapper.readValue(message, TaskEventMessage.class);
+            TaskEventMessage TaskEvent = objectMapper.readValue(event, TaskEventMessage.class);
 
             logger.atInfo()
                     .setMessage("Received task event!")
-                    .addKeyValue("taskId", event.getTaskId())
-                    .addKeyValue("taskName", event.getName())
+                    .addKeyValue("taskId", TaskEvent.getTaskId())
+                    .addKeyValue("taskName", TaskEvent.getName())
                     .log();
 
-            processEvent(event);
+            processEvent(TaskEvent);
         } catch (Exception e) {
-            logger.error("Error processing task event: {}", message, e);
+            logger.error("Error processing task event: {}", e);
         }
     }
 

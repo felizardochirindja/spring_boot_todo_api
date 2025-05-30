@@ -36,7 +36,7 @@ public class TaskActions {
     @Autowired
     private RemoteTaskSyncFetcher remoteTaskSyncFetcher;
     @Autowired
-    private EventPublisher eventPublisher;
+    private EventPublisher<TaskEventMessage> taskEventPublisher;
     @Value("${app.topics.task_events}")
     private String taskEventsTopic;
     private final static Logger logger = LoggerFactory.getLogger(TaskActions.class.getName());
@@ -62,7 +62,7 @@ public class TaskActions {
         Task createdTask = taskRepository.save(params.createTask(user));
 
         TaskEventMessage taskCreatedEvent = TaskEventMessage.fromTodo(createdTask, TaskEventName.TASK_CREATED);
-        eventPublisher.publish(taskEventsTopic, taskCreatedEvent);
+        taskEventPublisher.publish(taskEventsTopic, taskCreatedEvent);
 
         logger.atInfo()
                 .setMessage("Task created!")

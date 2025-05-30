@@ -10,13 +10,15 @@ import org.springframework.context.annotation.Profile;
 @Profile("test")
 public class EventConfigMock {
     @Bean
-    public EventPublisher eventPublisher() {
-        return new EventPublisher() {
+    public EventPublisher<EventMessaging> eventPublisher() {
+        return new EventPublisher<EventMessaging>() {
             @Override
-            public void publish(String channel, String key, EventMessaging message) {}
+            public void publish(String channel, EventMessaging message) {
+            }
 
             @Override
-            public void publish(String channel, EventMessaging message) {}
+            public void publish(String channel, String key, EventMessaging message) {
+            }
         };
     }
 }
