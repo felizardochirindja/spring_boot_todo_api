@@ -24,8 +24,9 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.verify;
 
 @SpringBootTest(classes = TodoApplication.class)
 @ActiveProfiles("test")
@@ -36,7 +37,7 @@ class TaskActionsTest {
     @MockitoBean
     private TaskRepository taskRepository;
     @MockitoBean
-    private EventPublisher<TaskEventMessage> eventPublisher;
+    private EventPublisher<TaskEventMessage> taskEventPublisher;
     @Value("${app.topics.task_events}")
     private String taskEventsTopicName;
     @InjectMocks
@@ -62,7 +63,7 @@ class TaskActionsTest {
         taskEventsTopicField.set(taskActions, taskEventsTopicName);
 
         TaskEventMessage event = TaskEventMessage.fromTodo(expectedTask, TaskEventName.TASK_CREATED);
-        doNothing().when(eventPublisher).publish(taskEventsTopicName, event);
+        doNothing().when(taskEventPublisher).publish(taskEventsTopicName, event);
 
         // Act
         Task createdTask = taskActions.create(params);
@@ -71,7 +72,7 @@ class TaskActionsTest {
         assertEquals(expectedTask, createdTask);
         verify(userRepository).findById(userId);
         verify(taskRepository).save(expectedTask);
-        verify(eventPublisher).publish(eq(taskEventsTopicName), any(TaskEventMessage.class));
+        verify(taskEventPublisher).publish(eq(taskEventsTopicName), any(TaskEventMessage.class));
     }
 
     @Test
