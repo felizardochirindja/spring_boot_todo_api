@@ -24,12 +24,7 @@ services:
       KAFKA_LOG_DIRS: /tmp/kraft-combined-logs
       CLUSTER_ID: MkU3OEVBNTcwNTJENDM2Qk
     healthcheck:
-      test: [
-        "CMD-SHELL",
-        "/opt/kafka/bin/kafka-topics.sh --create --topic healthcheck --bootstrap-server broker:29092 &&
-        /opt/kafka/bin/kafka-topics.sh --delete --topic healthcheck --bootstrap-server broker:29092 &&
-        exit 0 || exit 1"
-      ]
+      test: ["CMD", "bash", "-c", "/opt/kafka/bin/kafka-topics.sh --list --bootstrap-server broker:29092 || exit 1"]
       interval: 10s
       retries: 5
       start_period: 10s
@@ -45,7 +40,7 @@ services:
     ports:
       - "3307:3306"
     healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot" ]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
       interval: 10s
       retries: 5
       start_period: 10s
@@ -54,8 +49,8 @@ services:
     image: spring_boot_todo_api
     container_name: spring_boot_todo_api
     build:
-      context: ./
-      dockerfile: dockerfile
+      context: ./../
+      dockerfile: ./docker/dev.dockerfile
     ports:
       - "8080:8080"
     environment:

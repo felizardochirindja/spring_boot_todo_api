@@ -4,8 +4,8 @@
 
 FROM maven:3.9.9-eclipse-temurin-21 as build
 WORKDIR /opt/spring_boot_todo_api
-COPY pom.xml /opt/spring_boot_todo_api
-COPY src /opt/spring_boot_todo_api/src
+COPY ./../pom.xml /opt/spring_boot_todo_api
+COPY ./../src /opt/spring_boot_todo_api/src
 RUN mvn clean package
 
 #
