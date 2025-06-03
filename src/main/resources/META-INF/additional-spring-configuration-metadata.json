@@ -1,0 +1,19 @@
+{
+    "properties": [
+        {
+            "name": "security.jwt.secret-key",
+            "type": "java.lang.String",
+            "description": "Secret key for signing JWT tokens. It should be a strong, random string."
+        },
+        {
+            "name": "app.message_broker.name",
+            "type": "java.lang.String",
+            "description": "Name of the message broker to use. Supported values: 'kafka', 'rabbitmq'."
+        },
+        {
+            "name": "app.topics.task_events",
+            "type": "java.lang.String",
+            "description": "Comma-separated list of task event topics. Used for publishing and subscribing to task-related events."
+        }
+    ]
+}
