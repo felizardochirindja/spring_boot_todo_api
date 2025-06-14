@@ -1,10 +1,10 @@
 package com.personal.todo.modules.events.configs;
 
+import com.personal.todo.modules.task.events.TaskEvent;
 import org.springframework.context.annotation.Profile;
 import org.springframework.kafka.core.*;
 import org.springframework.kafka.support.serializer.JsonSerializer;
-import com.personal.todo.modules.events.entities.EventMessaging;
-import com.personal.todo.modules.events.partitioners.TimeBasedPartitioner;
+import com.personal.todo.modules.task.events.partitioners.TaskTimeBasedPartitioner;
 import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -41,18 +41,18 @@ public class KafkaConfig {
     }
 
     @Bean
-    public ProducerFactory<String, EventMessaging> producerFactory() {
+    public ProducerFactory<String, TaskEvent> taskProducerFactory() {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
-        configProps.put(ProducerConfig.PARTITIONER_CLASS_CONFIG, TimeBasedPartitioner.class.getName());
+        configProps.put(ProducerConfig.PARTITIONER_CLASS_CONFIG, TaskTimeBasedPartitioner.class.getName());
 
         return new DefaultKafkaProducerFactory<>(configProps);
     }
 
     @Bean
-    public KafkaTemplate<String, EventMessaging> kafkaTemplate() {
-        return new KafkaTemplate<>(producerFactory());
+    public KafkaTemplate<String, TaskEvent> taskKafkaTemplate() {
+        return new KafkaTemplate<>(taskProducerFactory());
     }
 }
