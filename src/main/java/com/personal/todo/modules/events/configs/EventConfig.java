@@ -1,8 +1,8 @@
 package com.personal.todo.modules.events.configs;
 
 import com.personal.todo.modules.events.handlers.EventPublisher;
-import com.personal.todo.modules.task.events.TaskEventMessage;
-import com.personal.todo.modules.task.events.adapters.KafkaTaskEventProducer;
+import com.personal.todo.modules.task.events.TaskEvent;
+import com.personal.todo.modules.task.events.adapters.KafkaTaskProducer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,13 +16,13 @@ public class EventConfig {
     private String brokerName;
 
     @Autowired(required = false)
-    private KafkaTaskEventProducer kafkaTaskEventProducer;
+    private KafkaTaskProducer kafkaTaskProducer;
 
     @Bean
     @Primary
-    public EventPublisher<TaskEventMessage> taskEventPublisher() {
+    public EventPublisher<TaskEvent> taskEventPublisher() {
         return switch (brokerName.toLowerCase()) {
-            case "kafka" -> kafkaTaskEventProducer;
+            case "kafka" -> kafkaTaskProducer;
             default -> throw new IllegalArgumentException("broker name not supported: " + brokerName);
         };
     }
