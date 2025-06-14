@@ -10,6 +10,10 @@ import com.personal.todo.modules.task.infra.platforms.api.controllers.v1.respons
 import com.personal.todo.modules.task.infra.platforms.api.controllers.v1.responses.RemoteTasksApiResponse;
 import com.personal.todo.modules.user.infra.platforms.api.controllers.v1.responses.UserApi;
 import com.personal.todo.modules.user.infra.platforms.api.controllers.v1.responses.UserApiResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +37,20 @@ public class UserController {
 
 
     @GetMapping("/{id}")
+    @Operation(
+            summary = "read user by id",
+            method = "GET",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "user read",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = UserApiResponse.class)
+                            )
+                    ),
+            }
+    )
     public ResponseEntity<UserApiResponse> readById(@PathVariable Integer id) {
         User user = userActions.readById(id);
 
@@ -46,12 +64,40 @@ public class UserController {
     }
 
     @GetMapping("/{id}/tasks")
+    @Operation(
+            summary = "read all tasks",
+            method = "GET",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "remote tasks read",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema()
+                            )
+                    ),
+            }
+    )
     public ResponseEntity<List<Task>> readAllTasks(@PathVariable @NotNull Integer id) {
         return ResponseEntity.ok(taskActions.readAllByUserId(id));
     }
 
     @GetMapping("{id}/tasks/remote")
     @PreAuthorize("hasRole('USER')")
+    @Operation(
+            summary = "read remote tasks",
+            method = "GET",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "remote tasks read",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = RemoteTasksApiResponse.class)
+                            )
+                    ),
+            }
+    )
     public ResponseEntity<RemoteTasksApiResponse> readAllRemoteTasksByUserId(
             @PathVariable @NotNull Integer id,
             Authentication auth
@@ -65,7 +111,6 @@ public class UserController {
                     .addKeyValue("authUserId", user.getId())
                     .addKeyValue("pathUserId", id)
                     .log();
-
 
             throw new IllegalArgumentException("auth user id does not match the path user id");
         }
