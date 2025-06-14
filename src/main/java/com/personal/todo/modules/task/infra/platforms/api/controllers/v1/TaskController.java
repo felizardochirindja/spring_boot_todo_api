@@ -29,7 +29,7 @@ public final class TaskController {
             responses = {
                 @ApiResponse(
                         responseCode = "200",
-                        description = "todo created successfully!",
+                        description = "task created",
                         content = @Content(
                                 mediaType = "application/json",
                                 schema = @Schema(implementation = TaskApiResponse.class)
@@ -50,6 +50,20 @@ public final class TaskController {
     }
 
     @GetMapping("/{id}")
+    @Operation(
+            summary = "read task by id",
+            method = "GET",
+            responses = {
+                    @ApiResponse(
+                          responseCode = "200",
+                          description = "task read",
+                          content = @Content(
+                                  mediaType = "application/json",
+                                  schema = @Schema(implementation = TaskApiResponse.class)
+                          )
+                    ),
+            }
+    )
     public ResponseEntity<TaskApiResponse> readById(@PathVariable Integer id) {
         var task = actions.readById(id);
         TaskApiResponse response = new TaskApiResponse(
@@ -66,6 +80,20 @@ public final class TaskController {
     }
 
     @PutMapping("/{id}")
+    @Operation(
+            summary = "update task",
+            method = "PUT",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "task updated",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = TaskApiResponse.class)
+                            )
+                    ),
+            }
+    )
     public ResponseEntity<TaskApiResponse> update(@PathVariable Integer id, @RequestBody UpdateTaskPayload payload) {
         var params = payload.createActionParams(id);
 
