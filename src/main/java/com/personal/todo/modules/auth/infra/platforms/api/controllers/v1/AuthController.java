@@ -34,7 +34,7 @@ public final class AuthController {
             responses = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "login efetuado com sucesso!",
+                            description = "login efetuado",
                             content = @Content(
                                 mediaType = "application/json",
                                 schema = @Schema(implementation = LoginApiResponse.class)
@@ -48,6 +48,20 @@ public final class AuthController {
     }
 
     @PostMapping("/signup")
+    @Operation(
+            summary = "cadastrar usuario",
+            method = "POST",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "usuario registrado",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = UserApiResponse.class)
+                            )
+                    )
+            }
+    )
     public ResponseEntity<UserApiResponse> signup(@RequestBody @Valid SignupPayload payload) {
         SignupInput params = payload.createActionParams();
         User user = authActions.signUp(params);
