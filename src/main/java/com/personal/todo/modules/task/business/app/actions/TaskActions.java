@@ -12,7 +12,7 @@ import com.personal.todo.modules.user.business.entities.User;
 import com.personal.todo.modules.task.business.app.ports.output.remotetask.RemoteTasksResponse;
 
 import com.personal.todo.modules.events.handlers.EventPublisher;
-import com.personal.todo.modules.task.events.TaskEventMessage;
+import com.personal.todo.modules.task.events.TaskEvent;
 import com.personal.todo.modules.task.events.TaskEventName;
 
 import org.slf4j.LoggerFactory;
@@ -36,7 +36,7 @@ public class TaskActions {
     @Autowired
     private RemoteTaskSyncFetcher remoteTaskSyncFetcher;
     @Autowired
-    private EventPublisher<TaskEventMessage> taskEventPublisher;
+    private EventPublisher<TaskEvent> taskEventPublisher;
     @Value("${app.topics.task_events}")
     private String taskEventsTopic;
     private final static Logger logger = LoggerFactory.getLogger(TaskActions.class.getName());
@@ -61,7 +61,7 @@ public class TaskActions {
 
         Task createdTask = taskRepository.save(params.createTask(user));
 
-        TaskEventMessage taskCreatedEvent = TaskEventMessage.fromTodo(createdTask, TaskEventName.TASK_CREATED);
+        TaskEvent taskCreatedEvent = TaskEvent.fromTodo(createdTask, TaskEventName.TASK_CREATED);
         taskEventPublisher.publish(taskEventsTopic, taskCreatedEvent);
 
         logger.atInfo()
