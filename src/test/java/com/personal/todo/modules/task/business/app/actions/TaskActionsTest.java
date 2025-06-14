@@ -8,9 +8,10 @@ import com.personal.todo.modules.task.business.app.params.input.CreateTaskInput;
 import com.personal.todo.modules.task.business.app.params.input.UpdateTaskInput;
 import com.personal.todo.modules.task.business.entities.Task;
 import com.personal.todo.modules.task.business.types.TaskStatus;
-import com.personal.todo.modules.task.events.TaskEventMessage;
+import com.personal.todo.modules.task.events.TaskEvent;
 import com.personal.todo.modules.task.events.TaskEventName;
 import com.personal.todo.modules.user.adapters.repositories.UserRepository;
+import com.personal.todo.modules.user.business.entities.Role;
 import com.personal.todo.modules.user.business.entities.User;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -37,7 +38,7 @@ class TaskActionsTest {
     @MockitoBean
     private TaskRepository taskRepository;
     @MockitoBean
-    private EventPublisher<TaskEventMessage> taskEventPublisher;
+    private EventPublisher<TaskEvent> taskEventPublisher;
     @Value("${app.topics.task_events}")
     private String taskEventsTopicName;
     @InjectMocks
@@ -62,7 +63,7 @@ class TaskActionsTest {
         taskEventsTopicField.setAccessible(true);
         taskEventsTopicField.set(taskActions, taskEventsTopicName);
 
-        TaskEventMessage event = TaskEventMessage.fromTodo(expectedTask, TaskEventName.TASK_CREATED);
+        TaskEvent event = TaskEvent.fromTodo(expectedTask, TaskEventName.TASK_CREATED);
         doNothing().when(taskEventPublisher).publish(taskEventsTopicName, event);
 
         // Act
@@ -72,7 +73,7 @@ class TaskActionsTest {
         assertEquals(expectedTask, createdTask);
         verify(userRepository).findById(userId);
         verify(taskRepository).save(expectedTask);
-        verify(taskEventPublisher).publish(eq(taskEventsTopicName), any(TaskEventMessage.class));
+        verify(taskEventPublisher).publish(eq(taskEventsTopicName), any(TaskEvent.class));
     }
 
     @Test
@@ -180,7 +181,25 @@ class TaskActionsTest {
         verify(taskRepository).findById(taskId);
     }
 
-    void shoudReadTaskByIdSuccessfully() {
+    @Test
+    void shouldReadTaskByIdSuccessfully() {
+        // arrange
+        int taskId = 1;
 
+        User user = new User(
+                "felix", "felix@gmail.com", "1234",
+                new Role(Role.Values.ADMIN, "description")
+        );
+
+        Task expectedTask = new Task(taskId, "task 1", TaskStatus.PENDING, user);
+
+        when(taskRepository.findById(taskId)).thenReturn(Optional.of(expectedTask));
+
+        // act
+        Task actualTask = taskActions.readById(taskId);
+
+        // assert
+        assertEquals(expectedTask, actualTask);
+        verify(taskRepository).findById(taskId);
     }
 }
