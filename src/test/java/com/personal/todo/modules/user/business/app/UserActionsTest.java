@@ -3,6 +3,7 @@ package com.personal.todo.modules.user.business.app;
 import com.personal.todo.TodoApplication;
 import com.personal.todo.modules.shared.exceptions.EntityNotFoundException;
 import com.personal.todo.modules.user.adapters.repositories.UserRepository;
+import com.personal.todo.modules.user.business.entities.Role;
 import com.personal.todo.modules.user.business.entities.User;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -51,5 +52,35 @@ class UserActionsTest {
 
         // act & assert
         assertThrows(EntityNotFoundException.class, () -> userActions.readById(userId));
+    }
+
+    @Test
+    void readByEmailShouldThrowExceptionWhenUserNotFound() {
+        // arrange
+        String userEmail = "felix@gmail.com";
+
+        when(userRepository.findByEmail(userEmail)).thenReturn(Optional.empty());
+
+        // act & assert
+        assertThrows(EntityNotFoundException.class, () -> userActions.readByEmail(userEmail));
+    }
+
+    @Test
+    void shouldReadByEmailSuccessfully() {
+        // arrange
+        String userEmail = "felix@gmail.com";
+        User expectedUser = new User(
+                "felix", userEmail, "1234",
+                new Role(Role.Values.USER, "description")
+        );
+
+        when(userRepository.findByEmail(userEmail)).thenReturn(Optional.of(expectedUser));
+
+        // act
+        User actualUser = userActions.readByEmail(userEmail);
+
+        // assert
+        assertEquals(expectedUser, actualUser);
+        verify(userRepository).findByEmail(userEmail);
     }
 }
