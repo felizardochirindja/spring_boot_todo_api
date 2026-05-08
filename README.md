@@ -115,7 +115,17 @@ Caso não tenha o Kafka instalado localmente, é possível subi-lo rapidamente u
 docker compose up -d --build kafka
 ```
 
-### 4 Configurar o Banco de Dados
+### 4 Verificar o perfil ativo
+
+Certifique-se de que o perfil ativo esteja configurado como `dev` no arquivo:
+
+📄 `src/main/resources/application.properties`
+
+```conf
+spring.profiles.active=dev
+```
+
+### 5 Configurar o Banco de Dados
 
 Garanta que o MySQL esteja rodando e que o banco de dados `todo_api` esteja criado. Depois, ajuste as configurações da conexão no arquivo:
 
@@ -127,17 +137,15 @@ spring.datasource.username=seu_usuario
 spring.datasource.password=sua_senha
 ```
 
-### 6 Verificar o perfil ativo
+### 6 Rodar as migrations
 
-Certifique-se de que o perfil ativo esteja configurado como `dev` no arquivo:
+Após a configurção do banco de dados, rodamos as migrations usando o comando abaixo:
 
-📄 `src/main/resources/application.properties`
-
-```conf
-spring.profiles.active=dev
+```bash
+mvn flyway:migrate
 ```
 
-### 7 Iniciar a aplicação
+### 6 Iniciar a aplicação
 
 Com Kafka e MySQL em execução, você pode iniciar a aplicação com:
 
