@@ -56,7 +56,7 @@ public class UserController {
         User user = userActions.readById(id);
 
         UserApiResponse response = new UserApiResponse(
-                "sucess",
+                "success",
                 "user read successfully",
                 UserApi.fromEntity(user)
         );
