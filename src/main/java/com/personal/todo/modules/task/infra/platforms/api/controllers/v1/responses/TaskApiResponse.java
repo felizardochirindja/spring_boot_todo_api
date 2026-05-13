@@ -3,13 +3,13 @@ package com.personal.todo.modules.task.infra.platforms.api.controllers.v1.respon
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 
-public record TaskApiResponse(
+public record TaskApiResponse<T>(
         @NotNull
         String status,
         @NotNull
         String message,
         @NotNull
         @Valid
-        TaskApi task
+        T data
 ) {
 }

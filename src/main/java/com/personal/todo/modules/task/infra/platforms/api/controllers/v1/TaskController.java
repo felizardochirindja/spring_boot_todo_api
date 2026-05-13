@@ -37,10 +37,10 @@ public final class TaskController {
                 ),
             }
     )
-    public ResponseEntity<TaskApiResponse> create(@RequestBody @Valid CreateTaskPayload payload) {
+    public ResponseEntity<TaskApiResponse<TaskApi>> create(@RequestBody @Valid CreateTaskPayload payload) {
         CreateTaskInput params = payload.createActionParams();
 
-        TaskApiResponse response = new TaskApiResponse(
+        TaskApiResponse<TaskApi> response = new TaskApiResponse<>(
                 "success",
                 "todo created successfully",
                 TaskApi.fromEntity(actions.create(params))
@@ -64,9 +64,9 @@ public final class TaskController {
                     ),
             }
     )
-    public ResponseEntity<TaskApiResponse> readById(@PathVariable Integer id) {
+    public ResponseEntity<TaskApiResponse<TaskApi>> readById(@PathVariable Integer id) {
         var task = actions.readById(id);
-        TaskApiResponse response = new TaskApiResponse(
+        var response = new TaskApiResponse<>(
                 "sucess",
                 "task read successfully",
                 TaskApi.fromEntity(task)
@@ -94,10 +94,10 @@ public final class TaskController {
                     ),
             }
     )
-    public ResponseEntity<TaskApiResponse> update(@PathVariable Integer id, @RequestBody UpdateTaskPayload payload) {
+    public ResponseEntity<TaskApiResponse<TaskApi>> update(@PathVariable Integer id, @RequestBody UpdateTaskPayload payload) {
         var params = payload.createActionParams(id);
 
-        TaskApiResponse response = new TaskApiResponse(
+        var response = new TaskApiResponse<>(
                 "success",
                 "task updated successfuly",
                 TaskApi.fromEntity(actions.update(params))
