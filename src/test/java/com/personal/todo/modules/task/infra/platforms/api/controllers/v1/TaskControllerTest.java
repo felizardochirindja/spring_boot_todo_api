@@ -84,8 +84,8 @@ class TaskControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.status").value("success"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("todo created successfully"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.task.title").value(taskTitle))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.task.status").value(TaskStatus.PENDING.name()));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data.title").value(taskTitle))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data.status").value(TaskStatus.PENDING.name()));
 
         Mockito.verify(userDetailsService).loadUserByUsername(email);
         Mockito.verify(taskActions).create(params);
