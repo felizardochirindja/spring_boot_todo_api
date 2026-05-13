@@ -3,6 +3,7 @@ package com.personal.todo.modules.user.infra.platforms.api.controllers.v1;
 import com.personal.todo.modules.auth.business.entities.AuthUser;
 import com.personal.todo.modules.task.business.app.params.output.ReadRemoteTasksOutput;
 import com.personal.todo.modules.task.business.app.actions.TaskActions;
+import com.personal.todo.modules.task.infra.platforms.api.controllers.v1.responses.TaskApiResponse;
 import com.personal.todo.modules.user.business.app.UserActions;
 import com.personal.todo.modules.task.business.entities.Task;
 import com.personal.todo.modules.user.business.entities.User;
@@ -70,16 +71,22 @@ public class UserController {
             responses = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "remote tasks read",
+                            description = "user tasks read",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema()
+                                    schema = @Schema(implementation = TaskApiResponse.class)
                             )
                     ),
             }
     )
-    public ResponseEntity<List<Task>> readAllTasks(@PathVariable @NotNull Integer id) {
-        return ResponseEntity.ok(taskActions.readAllByUserId(id));
+    public ResponseEntity<TaskApiResponse<List<Task>>> readAllTasks(@PathVariable @NotNull Integer id) {
+        var response = new TaskApiResponse<>(
+                "success",
+                "user tasks read successfully!",
+                taskActions.readAllByUserId(id)
+        );
+
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("{id}/tasks/remote")
