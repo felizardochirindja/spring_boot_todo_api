@@ -91,12 +91,14 @@ class UserControllerTest {
     void shouldReadAllTasksSuccessfully() throws Exception {
         mockMvc = MockMvcBuilders
                 .standaloneSetup(userController)
+                .addFilter(tokenAuthFilter)
                 .build();
 
-        int userId = 1;
+        String fakeToken = "fake_token";
+        String email = "felix@gmail.com";
 
         User user = new User(
-                "felix", "felix@gmail.com", "1234",
+                "felix", email, "1234",
                 new Role(Role.Values.USER, "description")
         );
 
@@ -105,15 +107,31 @@ class UserControllerTest {
                 new Task("task 2", user)
         );
 
+        int userId = 1;
+
         Mockito.when(taskActions.readAllByUserId(userId)).thenReturn(tasks);
+        Mockito.when(tokenGenerator.validateToken(fakeToken)).thenReturn(email);
+
+        UserDetails authUser = org.springframework.security.core.userdetails.User
+                .withUsername(email)
+                .password("12345")
+                .build();
+
+        Mockito.when(userDetailsService.loadUserByUsername(email))
+                .thenReturn(authUser);
 
         // act & assert
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/users/" + userId + "/tasks")
-                        .header("Authorization", "token")
                         .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
+                        .header("Authorization", "Bearer " + fakeToken)
+                )
+                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.status").value("success"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("user tasks read successfully!"));
 
         Mockito.verify(taskActions).readAllByUserId(userId);
+        Mockito.verify(tokenGenerator).validateToken(fakeToken);
+        Mockito.verify(userDetailsService).loadUserByUsername(email);
     }
 }
