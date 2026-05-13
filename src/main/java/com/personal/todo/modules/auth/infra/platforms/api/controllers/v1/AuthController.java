@@ -44,7 +44,8 @@ public final class AuthController {
     )
     public ResponseEntity<LoginApiResponse> login(@RequestBody @Valid LoginPayload payload) {
         String token = authActions.login(payload.email(), payload.password());
-        return ResponseEntity.ok(new LoginApiResponse(token));
+        var response = new LoginApiResponse("success", "user logged in sucessfully", token);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/signup")
