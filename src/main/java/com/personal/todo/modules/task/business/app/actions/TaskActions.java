@@ -125,15 +125,15 @@ public class TaskActions {
                     return new EntityNotFoundException("user not found");
                 });
 
-        List<Task> task = taskRepository.findAllByUserId(userId);
+        List<Task> tasks = taskRepository.findAllByUserId(userId);
 
         logger.atInfo()
                 .setMessage("Tasks read!")
                 .addKeyValue("userId", userId)
-                .addKeyValue("taskCount", task.size())
+                .addKeyValue("taskCount", tasks.size())
                 .log();
 
-        return task;
+        return tasks;
     }
 
     @CacheEvict(value = "tasks", key = "#result.getUser().getId()")
