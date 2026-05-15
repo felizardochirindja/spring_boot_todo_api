@@ -46,10 +46,10 @@ public class KafkaTaskConsumer implements EventConsumer {
         TaskEventName eventName = TaskEventName.valueOf(event.getName());
 
         switch (eventName) {
-            case TaskEventName.TASK_CREATED:
+            case TASK_CREATED:
                 taskActions.persistLog(eventName, event.getTaskId(), event.getTitle());
                 break;
-            case TaskEventName.TASK_UPDATED:
+            case TASK_UPDATED:
                 break;
             default:
                 logger.warn("Unknown event type: {}", event.getName());
