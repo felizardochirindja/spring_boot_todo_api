@@ -10,12 +10,14 @@ import com.personal.todo.modules.user.business.entities.User;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -25,6 +27,7 @@ import java.util.List;
 
 @WebMvcTest(UserController.class)
 @ActiveProfiles("test")
+@AutoConfigureMockMvc
 class UserControllerTest {
     @Autowired
     private MockMvc mockMvc;
@@ -35,6 +38,7 @@ class UserControllerTest {
     @Autowired
     private TokenAuthFilter tokenAuthFilter;
     @Autowired
+    @MockitoSpyBean
     private UserController userController;
     @MockitoBean
     private UserActions userActions;
@@ -126,12 +130,59 @@ class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + fakeToken)
                 )
+//                .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.status").value("success"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("user tasks read successfully!"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("user tasks read successfully!"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].title").value(tasks.get(0).getTitle()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data[1].title").value(tasks.get(1).getTitle()));
 
         Mockito.verify(taskActions).readAllByUserId(userId);
         Mockito.verify(tokenGenerator).validateToken(fakeToken);
         Mockito.verify(userDetailsService).loadUserByUsername(email);
+    }
+
+    @Test
+    void readAllTasksShouldReturn403WhenTokenIsInvalid() throws Exception {
+        mockMvc = MockMvcBuilders
+                .standaloneSetup(UserController.class)
+                .addFilter(tokenAuthFilter)
+                .build();
+
+        int userId = 1;
+        String invalidToken = "invalid token";
+
+        Mockito.when(tokenGenerator.validateToken(invalidToken)).thenReturn(null);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/users/" + userId + "/tasks")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + invalidToken)
+                )
+                .andExpect(MockMvcResultMatchers.status().isForbidden());
+
+        Mockito.verifyNoInteractions(taskActions);
+        Mockito.verify(userController, Mockito.never())
+                .readAllTasks(Mockito.anyInt());
+    }
+
+    @Test
+    void readAllTasksShouldReturn401WhenTokenIsMissing() throws Exception {
+        mockMvc = MockMvcBuilders
+                .standaloneSetup(UserController.class)
+                .addFilter(tokenAuthFilter)
+                .build();
+
+        int userId = 1;
+
+        mockMvc.perform(
+                        MockMvcRequestBuilders.get("/users/" + userId + "/tasks")
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(MockMvcResultMatchers.status().isUnauthorized());
+
+        Mockito.verifyNoInteractions(taskActions);
+        Mockito.verify(userController, Mockito.never())
+                .readAllTasks(Mockito.anyInt());
     }
 }
