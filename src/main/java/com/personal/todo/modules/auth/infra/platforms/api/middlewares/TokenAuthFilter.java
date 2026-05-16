@@ -11,9 +11,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.List;
 
 @Component
 public class TokenAuthFilter extends OncePerRequestFilter {
@@ -21,6 +23,25 @@ public class TokenAuthFilter extends OncePerRequestFilter {
     private TokenGenerator tokenGenerator;
     @Autowired
     private UserDetailsService userDetailsService;
+    private final AntPathMatcher pathMatcher = new AntPathMatcher();
+
+    private static final List<String> PUBLIC_PATHS = List.of(
+        "/docs/**",
+        "/swagger-docs",
+        "/swagger-ui/**",
+        "/actuator/**",
+        "/auth/**"
+    );
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String path = request.getServletPath();
+
+        boolean match = PUBLIC_PATHS.stream()
+                .anyMatch(pattern -> pathMatcher.match(pattern, path));
+
+        return match;
+    }
 
     @Override
     protected void doFilterInternal(
@@ -31,22 +52,29 @@ public class TokenAuthFilter extends OncePerRequestFilter {
             @NonNull
             FilterChain filterChain
     ) throws ServletException, IOException {
-        String token = this.extractToken(request);        
-        if (token != null) {
-            String email = tokenGenerator.validateToken(token);
-        
-            if (email != null) {
-                var userDetails = userDetailsService.loadUserByUsername(email);
-            
-                var authorization = new UsernamePasswordAuthenticationToken(
-                        userDetails,
-                        null,
-                        userDetails.getAuthorities()
-                );
-    
-                SecurityContextHolder.getContext().setAuthentication(authorization);
-            }
+       String token = extractToken(request);
+
+        if (token == null) {
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            return;
         }
+
+        String email = tokenGenerator.validateToken(token);
+
+        if (email == null) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
+        }
+
+        var userDetails = userDetailsService.loadUserByUsername(email);
+
+        var authorization = new UsernamePasswordAuthenticationToken(
+                userDetails,
+                null,
+                userDetails.getAuthorities()
+        );
+
+        SecurityContextHolder.getContext().setAuthentication(authorization);
 
         filterChain.doFilter(request, response);
     }
