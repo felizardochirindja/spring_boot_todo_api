@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,6 +38,7 @@ public final class TaskController {
                 ),
             }
     )
+    @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<TaskApiResponse<TaskApi>> create(@RequestBody @Valid CreateTaskPayload payload) {
         CreateTaskInput params = payload.createActionParams();
 
@@ -64,6 +66,7 @@ public final class TaskController {
                     ),
             }
     )
+    @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<TaskApiResponse<TaskApi>> readById(@PathVariable Integer id) {
         var task = actions.readById(id);
         var response = new TaskApiResponse<>(
@@ -94,6 +97,7 @@ public final class TaskController {
                     ),
             }
     )
+    @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<TaskApiResponse<TaskApi>> update(@PathVariable Integer id, @RequestBody UpdateTaskPayload payload) {
         var params = payload.createActionParams(id);
 
