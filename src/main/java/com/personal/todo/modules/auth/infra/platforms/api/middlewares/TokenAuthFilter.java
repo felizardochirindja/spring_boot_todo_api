@@ -31,29 +31,22 @@ public class TokenAuthFilter extends OncePerRequestFilter {
             @NonNull
             FilterChain filterChain
     ) throws ServletException, IOException {
-        String token = this.extractToken(request);
-
-        if (token == null) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-            return;
+        String token = this.extractToken(request);        
+        if (token != null) {
+            String email = tokenGenerator.validateToken(token);
+        
+            if (email != null) {
+                var userDetails = userDetailsService.loadUserByUsername(email);
+            
+                var authorization = new UsernamePasswordAuthenticationToken(
+                        userDetails,
+                        null,
+                        userDetails.getAuthorities()
+                );
+    
+                SecurityContextHolder.getContext().setAuthentication(authorization);
+            }
         }
-
-        String email = tokenGenerator.validateToken(token);
-
-        if (email == null) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-            return;
-        }
-
-        var userDetails = userDetailsService.loadUserByUsername(email);
-
-        var authorization = new UsernamePasswordAuthenticationToken(
-                userDetails,
-                null,
-                userDetails.getAuthorities()
-        );
-
-        SecurityContextHolder.getContext().setAuthentication(authorization);
 
         filterChain.doFilter(request, response);
     }
