@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,6 +53,7 @@ public class UserController {
                     ),
             }
     )
+    @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<UserApiResponse> readById(@PathVariable Integer id) {
         User user = userActions.readById(id);
 
@@ -79,6 +81,7 @@ public class UserController {
                     ),
             }
     )
+    @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<TaskApiResponse<List<Task>>> readAllTasks(@PathVariable @NotNull Integer id) {
         var response = new TaskApiResponse<>(
                 "success",
@@ -105,6 +108,7 @@ public class UserController {
                     ),
             }
     )
+    @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<RemoteTasksApiResponse> readAllRemoteTasksByUserId(
             @PathVariable @NotNull Integer id,
             Authentication auth
