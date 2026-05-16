@@ -143,7 +143,7 @@ class UserControllerTest {
     }
 
     @Test
-    void readAllTasksShouldReturn403WhenTokenIsInvalid() throws Exception {
+    void readAllTasksShouldReturn401WhenTokenIsInvalid() throws Exception {
         mockMvc = MockMvcBuilders
                 .standaloneSetup(UserController.class)
                 .addFilter(tokenAuthFilter)
@@ -159,7 +159,7 @@ class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + invalidToken)
                 )
-                .andExpect(MockMvcResultMatchers.status().isForbidden());
+                .andExpect(MockMvcResultMatchers.status().isUnauthorized());
 
         Mockito.verifyNoInteractions(taskActions);
         Mockito.verify(userController, Mockito.never())
@@ -167,7 +167,7 @@ class UserControllerTest {
     }
 
     @Test
-    void readAllTasksShouldReturn401WhenTokenIsMissing() throws Exception {
+    void readAllTasksShouldReturn403WhenTokenIsMissing() throws Exception {
         mockMvc = MockMvcBuilders
                 .standaloneSetup(UserController.class)
                 .addFilter(tokenAuthFilter)
@@ -179,7 +179,7 @@ class UserControllerTest {
                         MockMvcRequestBuilders.get("/users/" + userId + "/tasks")
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
-                .andExpect(MockMvcResultMatchers.status().isUnauthorized());
+                .andExpect(MockMvcResultMatchers.status().isForbidden());
 
         Mockito.verifyNoInteractions(taskActions);
         Mockito.verify(userController, Mockito.never())
