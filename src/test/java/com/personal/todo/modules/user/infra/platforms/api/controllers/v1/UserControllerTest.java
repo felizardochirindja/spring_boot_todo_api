@@ -10,7 +10,6 @@ import com.personal.todo.modules.user.business.entities.User;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,7 +26,6 @@ import java.util.List;
 
 @WebMvcTest(UserController.class)
 @ActiveProfiles("test")
-@AutoConfigureMockMvc
 class UserControllerTest {
     @Autowired
     private MockMvc mockMvc;
@@ -134,8 +132,20 @@ class UserControllerTest {
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.status").value("success"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("user tasks read successfully!"))
+
                 .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].title").value(tasks.get(0).getTitle()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.data[1].title").value(tasks.get(1).getTitle()));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].user.name").value(tasks.get(0).getUser().getName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].user.email").value(tasks.get(0).getUser().getEmail()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].user.role.name").value(tasks.get(0).getUser().getRole().getName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].user.role.description").value(tasks.get(0).getUser().getRole().getDescription()))
+
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data[1].title").value(tasks.get(1).getTitle()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data[1].user.name").value(tasks.get(1).getUser().getName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data[1].user.email").value(tasks.get(1).getUser().getEmail()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data[1].user.role.name").value(tasks.get(1).getUser().getRole().getName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data[1].user.role.description").value(tasks.get(1).getUser().getRole().getDescription()))
+                ;
+        // the filed password should not be returned
 
         Mockito.verify(taskActions).readAllByUserId(userId);
         Mockito.verify(tokenGenerator).validateToken(fakeToken);
@@ -162,8 +172,8 @@ class UserControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isUnauthorized());
 
         Mockito.verifyNoInteractions(taskActions);
-        Mockito.verify(userController, Mockito.never())
-                .readAllTasks(Mockito.anyInt());
+        Mockito.verify(userController, Mockito.never()).readAllTasks(Mockito.anyInt());
+        // garantir que nao houve interacao com doFilterInternal do tokenAuthFilter
     }
 
     @Test
@@ -182,7 +192,7 @@ class UserControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isForbidden());
 
         Mockito.verifyNoInteractions(taskActions);
-        Mockito.verify(userController, Mockito.never())
-                .readAllTasks(Mockito.anyInt());
+        Mockito.verify(userController, Mockito.never()).readAllTasks(Mockito.anyInt());
+        // garantir que nao houve interacao com doFilterInternal do tokenAuthFilter
     }
 }
