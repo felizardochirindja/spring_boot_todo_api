@@ -25,6 +25,23 @@
         </encoder>
     </appender>
 
+    <logger name="org.hibernate.engine.internal.StatisticalLoggingSessionEventListener" level="INFO" additivity="false">
+        <appender-ref ref="FRAMEWORK"/>
+    </logger>
+
+    <logger name="org.apache.kafka.clients.consumer.ConsumerConfig" level="INFO" additivity="false">
+        <appender-ref ref="KAFKA"/>
+    </logger>
+
+    <logger name="org.apache.kafka.clients.admin.AdminClientConfig" level="INFO" additivity="false">
+        <appender-ref ref="KAFKA"/>
+    </logger>
+
+    <logger name="org.apache.kafka.clients.consumer.internals.ConsumerCoordinator" level="INFO" additivity="false">
+        <appender-ref ref="KAFKA"/>
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+
     <logger name="com.personal.todo" level="INFO" additivity="false">
         <appender-ref ref="APP"/>
     </logger>
