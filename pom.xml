@@ -169,9 +169,11 @@
 				<artifactId>flyway-maven-plugin</artifactId>
 				<version>11.7.1</version>
 				<configuration>
-					<url>jdbc:mysql://localhost:3306/todo_api</url>
-					<user>root</user>
-					<password>12345678</password>
+					<configuration>
+						<configFiles>
+							<configFile>flyway.conf</configFile>
+						</configFiles>
+					</configuration>Ï
 				</configuration>
 			</plugin>
 			<plugin>
