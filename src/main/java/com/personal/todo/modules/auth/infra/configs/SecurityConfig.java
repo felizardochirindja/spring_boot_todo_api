@@ -50,7 +50,9 @@ public class SecurityConfig {
                                 "/swagger-ui/**",
                                 "/docs/**"
                         ).permitAll()
-                        .requestMatchers("/actuator/**").permitAll()
+                        .requestMatchers(
+                            "/actuator/**"
+                        ).permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(tokenAuthFilter, UsernamePasswordAuthenticationFilter.class)
