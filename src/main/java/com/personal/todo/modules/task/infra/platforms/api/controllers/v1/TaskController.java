@@ -1,5 +1,6 @@
 package com.personal.todo.modules.task.infra.platforms.api.controllers.v1;
 
+import com.giffing.bucket4j.spring.boot.starter.context.RateLimiting;
 import com.personal.todo.modules.task.business.app.actions.TaskActions;
 import com.personal.todo.modules.task.business.app.params.input.CreateTaskInput;
 import com.personal.todo.modules.task.infra.platforms.api.controllers.v1.requests.CreateTaskPayload;
@@ -67,6 +68,7 @@ public final class TaskController {
             }
     )
     @SecurityRequirement(name = "bearerAuth")
+    @RateLimiting(name = "default")
     public ResponseEntity<TaskApiResponse<TaskApi>> readById(@PathVariable Integer id) {
         var task = actions.readById(id);
         var response = new TaskApiResponse<>(
