@@ -27,20 +27,18 @@ public class DummyJsonTaskSyncFetcherByWebClient implements RemoteTaskSyncFetche
 
     @CircuitBreaker(name = "fetchTasksByUserId", fallbackMethod = "fetchTasksByUserIdFallback")
     public RemoteTasksResponse fetchTasksByUserId(Integer userId) {
-        throw new RuntimeException("forced failure");
+        var response = dummyJsonWebClient.get()
+                .uri("/todos/user/" + userId)
+                .retrieve()
+                .bodyToMono(RemoteTasksResponse.class)
+                .block();
 
-        // var response = dummyJsonWebClient.get()
-        //         .uri("/todos/user/" + userId)
-        //         .retrieve()
-        //         .bodyToMono(RemoteTasksResponse.class)
-        //         .block();
+        cacheService.cacheSuccess(userId, response);
 
-        // cacheService.cacheSuccess(userId, response);
-
-        // return response;
+        return response;
     }
 
-    private RemoteTasksResponse fetchTasksByUserIdFallback(Integer userId, Throwable throwable) {
+    public RemoteTasksResponse fetchTasksByUserIdFallback(Integer userId, Throwable throwable) {
         logger.atWarn()
             .setMessage("Fallback triggered for fetchTasksByUserId due to circuit breaker exception!")
             .addKeyValue("userId", userId)
