@@ -11,6 +11,8 @@ import com.personal.todo.modules.task.infra.platforms.api.controllers.v1.respons
 import com.personal.todo.modules.task.infra.platforms.api.controllers.v1.responses.RemoteTasksApiResponse;
 import com.personal.todo.modules.user.infra.platforms.api.controllers.v1.responses.UserApi;
 import com.personal.todo.modules.user.infra.platforms.api.controllers.v1.responses.UserApiResponse;
+
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
