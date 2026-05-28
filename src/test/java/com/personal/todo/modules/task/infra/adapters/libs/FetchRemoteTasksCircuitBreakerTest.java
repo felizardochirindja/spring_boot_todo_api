@@ -5,23 +5,31 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
+import com.personal.todo.modules.task.business.app.ports.output.remotetask.RemoteTask;
 import com.personal.todo.modules.task.business.app.ports.output.remotetask.RemoteTasksResponse;
 
 import io.github.resilience4j.circuitbreaker.CircuitBreaker;
 import io.github.resilience4j.circuitbreaker.CircuitBreakerRegistry;
 
-@SpringBootTest
+@SpringBootTest()
 @ActiveProfiles("test")
 public class FetchRemoteTasksCircuitBreakerTest {
+    @Autowired
+    private CacheManager cacheManager;
     @Autowired
     @Qualifier("dummyJsonTaskSyncFetcherByWebClient")
     private DummyJsonTaskSyncFetcherByWebClient fetcher;
@@ -51,10 +59,101 @@ public class FetchRemoteTasksCircuitBreakerTest {
 
         CircuitBreaker circuitBreaker = circuitBreakerRegistry.circuitBreaker("fetchTasksByUserId");
 
+        int userId = 1;
+        var expectedRmoteTasks =  new RemoteTasksResponse(List.of(), 0, 0, 0, userId);
+        
         for (int i = 0; i < 4; i++) {
-            fetcher.fetchTasksByUserId(1);
+            var result = fetcher.fetchTasksByUserId(userId);
+            assertEquals(expectedRmoteTasks, result);
         }
 
         assertEquals(CircuitBreaker.State.OPEN, circuitBreaker.getState());
+
+        // garantir que metodo cache sucess nao foi chamado
+        // o cache deve estar vazio
+    }
+
+    @Test
+    void circuitBreakerShouldContinueClosedIfThresholdHitedWihtNoFailure() {
+        WebClient.RequestHeadersUriSpec uriSpec = mock(WebClient.RequestHeadersUriSpec.class);
+        WebClient.RequestHeadersSpec headersSpec = mock(WebClient.RequestHeadersSpec.class);
+        WebClient.ResponseSpec responseSpec = mock(WebClient.ResponseSpec.class);
+
+        var remoteTasks = List.of(
+            new RemoteTask(1, "task 1", true),
+            new RemoteTask(2, "task 2", false)
+        );
+
+        int userId = 1;
+        
+        var remoteTasksResponse = new RemoteTasksResponse(
+            remoteTasks,
+            2,
+            0,
+            0,
+            userId
+        ); 
+        
+        when(dummyJsonWebClient.get()).thenReturn(uriSpec);
+        when(uriSpec.uri(anyString())).thenReturn(headersSpec);
+        when(headersSpec.retrieve()).thenReturn(responseSpec);
+        when(responseSpec.bodyToMono(RemoteTasksResponse.class))
+        .thenReturn(Mono.just(remoteTasksResponse));
+        
+        CircuitBreaker circuitBreaker = circuitBreakerRegistry.circuitBreaker("fetchTasksByUserId");
+        
+        Cache cache = cacheManager.getCache("remoteTasks");
+
+        for (int i = 0; i < 4; i++) {
+            fetcher.fetchTasksByUserId(userId);
+
+            var cachedRemoteTasks = cache.get(userId, RemoteTasksResponse.class);
+            assertEquals(remoteTasksResponse.todos(), cachedRemoteTasks.todos());
+            assertEquals(2, cachedRemoteTasks.total());
+        }
+        
+        assertEquals(CircuitBreaker.State.CLOSED, circuitBreaker.getState());
+        // garantir se o metodo cache success foi chamando
+    }
+
+    @Test
+    void shouldReturnCachedTasksIfCircuitBreakerIsOpen() {
+        WebClient.RequestHeadersUriSpec uriSpec = mock(WebClient.RequestHeadersUriSpec.class);
+        WebClient.RequestHeadersSpec headersSpec = mock(WebClient.RequestHeadersSpec.class);
+        WebClient.ResponseSpec responseSpec = mock(WebClient.ResponseSpec.class);
+
+        when(dummyJsonWebClient.get()).thenReturn(uriSpec);
+        when(uriSpec.uri(anyString())).thenReturn(headersSpec);
+        when(headersSpec.retrieve()).thenReturn(responseSpec);
+        when(responseSpec.bodyToMono(RemoteTasksResponse.class))
+            .thenThrow(new RuntimeException("service unavailable"));
+
+        CircuitBreaker circuitBreaker = circuitBreakerRegistry.circuitBreaker("fetchTasksByUserId");
+
+        var remoteTasks = List.of(
+            new RemoteTask(1, "task 1", true),
+            new RemoteTask(2, "task 2", false)
+        );
+        
+        int userId = 1;
+        var cachedRemoteTasksResponse = new RemoteTasksResponse(
+            remoteTasks,
+            2,
+            0,
+            0,
+            userId
+        ); 
+        
+        Cache cache = cacheManager.getCache("remoteTasks");
+        cache.put(userId, cachedRemoteTasksResponse);
+
+        RemoteTasksResponse result = null;
+
+        for (int i = 0; i < 4; i++) {
+            result = fetcher.fetchTasksByUserId(userId);
+        }
+        
+        assertEquals(CircuitBreaker.State.OPEN, circuitBreaker.getState());
+        assertEquals(cachedRemoteTasksResponse, result);
     }
 }
