@@ -13,7 +13,7 @@ public class TaskScheduler {
     @Autowired
     private TaskRepository taskRepository;
 
-    @Scheduled(initialDelay = 10000, fixedDelay = 20000)
+    @Scheduled(initialDelay = 10000, fixedDelay = 50000)
     public void archiveOldTasks() {
         LocalDateTime threshold = LocalDateTime.now().minusDays(7);
 
