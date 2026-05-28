@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
+import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
@@ -47,6 +48,41 @@ public class FetchRemoteTasksTest {
         assertNotNull(result);
         assertEquals(expected, result);
         assertEquals(userId, result.userId());
+
+        verify(cacheManager).getCache("remoteTasks");
         verify(cache).get(userId, RemoteTasksResponse.class);
+    }
+
+    @Test
+    void fetchTasksByUserIdFallbackShouldReturnEmptyListOfTasksIfCacheIsMissing() {
+        int userId = 1;
+
+        when(cacheManager.getCache("remoteTasks")).thenReturn(cache);
+        when(cache.get(userId, RemoteTasksResponse.class)).thenReturn(null);
+
+        RemoteTasksResponse result = fetcher.fetchTasksByUserIdFallback(userId, throwable);
+        var expected = new RemoteTasksResponse(List.of(), 0, 0, 0, userId);
+        
+        assertNotNull(result);
+        assertEquals(expected, result);
+
+        verify(cache).get(userId, RemoteTasksResponse.class);
+        verify(cacheManager).getCache("remoteTasks");
+    }
+
+    @Test
+    void fetchTasksByUserIdFallbackShouldReturnEmptyListOfTasksIfCacheIsNull() {
+         int userId = 1;
+
+        when(cacheManager.getCache("remoteTasks")).thenReturn(null);
+
+        RemoteTasksResponse result = fetcher.fetchTasksByUserIdFallback(userId, throwable);
+        var expected = new RemoteTasksResponse(List.of(), 0, 0, 0, userId);
+        
+        assertNotNull(result);
+        assertEquals(expected, result);
+
+        verify(cacheManager).getCache("remoteTasks");
+        verify(cache, Mockito.never()).get(userId, RemoteTasksResponse.class);
     }
 }
