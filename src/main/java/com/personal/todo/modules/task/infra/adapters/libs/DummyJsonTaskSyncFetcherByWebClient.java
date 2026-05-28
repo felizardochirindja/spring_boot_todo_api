@@ -31,9 +31,10 @@ public class DummyJsonTaskSyncFetcherByWebClient implements RemoteTaskSyncFetche
                 .uri("/todos/user/" + userId)
                 .retrieve()
                 .bodyToMono(RemoteTasksResponse.class)
+                .doOnNext(remoteTasks -> {
+                    cacheService.cacheSuccess(userId, remoteTasks);
+                })
                 .block();
-
-        cacheService.cacheSuccess(userId, response);
 
         return response;
     }
