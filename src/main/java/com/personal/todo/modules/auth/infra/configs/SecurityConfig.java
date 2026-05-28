@@ -46,12 +46,11 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/signup").permitAll()
                         .requestMatchers(
+                                HttpMethod.GET,
                                 "/swagger-docs",
                                 "/swagger-ui/**",
-                                "/docs/**"
-                        ).permitAll()
-                        .requestMatchers(
-                            "/actuator/**"
+                                "/docs/**",
+                                "/actuator/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
@@ -78,6 +77,6 @@ public class SecurityConfig {
     public UserDetailsService userDetailsService() {
         return email -> userRepository.findByEmail(email)
                 .map(AuthUser::new)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+                .orElseThrow(() -> new UsernameNotFoundException("Auth user not found"));
     }
 }
