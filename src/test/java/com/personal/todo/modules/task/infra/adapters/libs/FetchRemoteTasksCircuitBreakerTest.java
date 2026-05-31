@@ -3,6 +3,7 @@ package com.personal.todo.modules.task.infra.adapters.libs;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
@@ -155,5 +156,93 @@ public class FetchRemoteTasksCircuitBreakerTest {
         
         assertEquals(CircuitBreaker.State.OPEN, circuitBreaker.getState());
         assertEquals(cachedRemoteTasksResponse, result);
+    }
+
+    @Test
+    void shouldTransitionToHalfOpenAndCloseOnSuccess() throws InterruptedException {
+        WebClient.RequestHeadersUriSpec uriSpec = mock(WebClient.RequestHeadersUriSpec.class);
+        WebClient.RequestHeadersSpec headersSpec = mock(WebClient.RequestHeadersSpec.class);
+        WebClient.ResponseSpec responseSpec = mock(WebClient.ResponseSpec.class);
+
+        when(dummyJsonWebClient.get()).thenReturn(uriSpec);
+        when(uriSpec.uri(anyString())).thenReturn(headersSpec);
+        when(headersSpec.retrieve()).thenReturn(responseSpec);
+        when(responseSpec.bodyToMono(RemoteTasksResponse.class))
+            .thenThrow(new RuntimeException("service unavailable"));
+
+        CircuitBreaker circuitBreaker = circuitBreakerRegistry.circuitBreaker("fetchTasksByUserId");
+        int userId = 1;
+
+        // Trigger failures to open the circuit
+        for (int i = 0; i < 4; i++) {
+            fetcher.fetchTasksByUserId(userId);
+        }
+
+        assertEquals(CircuitBreaker.State.OPEN, circuitBreaker.getState());
+
+        // Wait for the wait duration to pass so circuit transitions to HALF_OPEN
+        Thread.sleep(1500);
+
+        assertEquals(CircuitBreaker.State.HALF_OPEN, circuitBreaker.getState());
+
+        var remoteTasks = List.of(
+            new RemoteTask(1, "task 1", true),
+            new RemoteTask(2, "task 2", false)
+        );
+        var remoteTasksResponse = new RemoteTasksResponse(remoteTasks, 2, 0, 0, userId);
+
+        // Reset the mock to clear the thenThrow() stubbing and set up success response
+        reset(responseSpec);
+        when(responseSpec.bodyToMono(RemoteTasksResponse.class))
+            .thenReturn(Mono.just(remoteTasksResponse));
+
+        // Make a successful call in HALF_OPEN state
+        for (int i = 0; i < 2; i++) {
+            RemoteTasksResponse result = fetcher.fetchTasksByUserId(userId);
+            assertEquals(remoteTasksResponse, result);
+        }
+
+        assertEquals(CircuitBreaker.State.CLOSED, circuitBreaker.getState());
+    }
+
+    @Test
+    void shouldReopenCircuitOnFailureInHalfOpenState() throws InterruptedException {
+        WebClient.RequestHeadersUriSpec uriSpec = mock(WebClient.RequestHeadersUriSpec.class);
+        WebClient.RequestHeadersSpec headersSpec = mock(WebClient.RequestHeadersSpec.class);
+        WebClient.ResponseSpec responseSpec = mock(WebClient.ResponseSpec.class);
+
+        when(dummyJsonWebClient.get()).thenReturn(uriSpec);
+        when(uriSpec.uri(anyString())).thenReturn(headersSpec);
+        when(headersSpec.retrieve()).thenReturn(responseSpec);
+        when(responseSpec.bodyToMono(RemoteTasksResponse.class))
+            .thenThrow(new RuntimeException("service unavailable"));
+
+        CircuitBreaker circuitBreaker = circuitBreakerRegistry.circuitBreaker("fetchTasksByUserId");
+        int userId = 1;
+
+        // Trigger failures to open the circuit
+        for (int i = 0; i < 4; i++) {
+            fetcher.fetchTasksByUserId(userId);
+        }
+
+        assertEquals(CircuitBreaker.State.OPEN, circuitBreaker.getState());
+
+        // Wait for the wait duration to pass so circuit transitions to HALF_OPEN
+        Thread.sleep(1500);
+
+        assertEquals(CircuitBreaker.State.HALF_OPEN, circuitBreaker.getState());
+
+        // Reset the mock to ensure it still throws (failure in HALF_OPEN state)
+        reset(responseSpec);
+        when(responseSpec.bodyToMono(RemoteTasksResponse.class))
+            .thenThrow(new RuntimeException("service unavailable"));
+
+        // Make a call that will fail in HALF_OPEN state
+        for (int i = 0; i < 2; i++) {
+            RemoteTasksResponse result = fetcher.fetchTasksByUserId(userId);
+            assertEquals(new RemoteTasksResponse(List.of(), 0, 0, 0, userId), result);
+        }
+
+        assertEquals(CircuitBreaker.State.OPEN, circuitBreaker.getState());
     }
 }
