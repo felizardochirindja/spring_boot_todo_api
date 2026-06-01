@@ -20,13 +20,14 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import com.personal.todo.TodoApplication;
 import com.personal.todo.modules.task.business.app.ports.output.remotetask.RemoteTask;
 import com.personal.todo.modules.task.business.app.ports.output.remotetask.RemoteTasksResponse;
 
 import io.github.resilience4j.circuitbreaker.CircuitBreaker;
 import io.github.resilience4j.circuitbreaker.CircuitBreakerRegistry;
 
-@SpringBootTest()
+@SpringBootTest(classes = TodoApplication.class)
 @ActiveProfiles("test")
 public class FetchRemoteTasksCircuitBreakerTest {
     @Autowired
